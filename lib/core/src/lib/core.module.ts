@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,6 @@ import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angu
 import { AuthenticationService } from './auth/services/authentication.service';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { IdentityUserInfoModule } from './identity-user-info/identity-user-info.module';
-import { AuthBearerInterceptor } from './auth/authentication-interceptor/auth-bearer.interceptor';
 import { loadAppConfig } from './app-config/app-config.loader';
 import { AppConfigService } from './app-config/app-config.service';
 import { StorageService } from './common/services/storage.service';
@@ -182,7 +181,6 @@ export class CoreModule {
                     deps: [ AlfrescoApiLoaderService ],
                     multi: true
                 },
-                { provide: HTTP_INTERCEPTORS, useClass: AuthBearerInterceptor, multi: true },
                 ...(config.useAngularBasedHttpClientInAlfrescoJs
                     ? [{ provide: AlfrescoApiService, useClass: AlfrescoApiServiceWithAngularBasedHttpClient }]
                     : []

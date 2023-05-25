@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,13 @@ export class FormModel implements ProcessFormModel {
     processVariables: ProcessVariableModel[] = [];
     variables: FormVariableModel[] = [];
 
-    constructor(json?: any, formValues?: FormValues, readOnly: boolean = false, protected formService?: FormValidationService, enableFixedSpace?: boolean) {
+    constructor(
+        json?: any,
+        formValues?: FormValues,
+        readOnly: boolean = false,
+        protected formService?: FormValidationService,
+        enableFixedSpace?: boolean
+    ) {
         this.readOnly = readOnly;
         this.json = json;
 
@@ -415,8 +421,10 @@ export class FormModel implements ProcessFormModel {
     }
 
     setNodeIdValueForViewersLinkedToUploadWidget(linkedUploadWidgetContentSelected: UploadWidgetContentLinkModel) {
+        const linkedWidgetType = linkedUploadWidgetContentSelected?.options?.linkedWidgetType ?? 'uploadWidget';
+
         const subscribedViewers = this.fieldsCache.filter(field =>
-            linkedUploadWidgetContentSelected.uploadWidgetId === field.params['uploadWidget']
+            linkedUploadWidgetContentSelected.uploadWidgetId === field.params[linkedWidgetType]
         );
 
         subscribedViewers.forEach(viewer => {

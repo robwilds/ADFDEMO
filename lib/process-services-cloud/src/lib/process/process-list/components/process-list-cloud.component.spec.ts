@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,15 @@
  */
 
 import { Component, SimpleChange, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
     AppConfigService,
     ColumnsSelectorComponent,
+    CustomEmptyContentTemplateDirective,
     DataColumn,
     DataRowEvent,
+    DataTableModule,
     getDataColumnMock,
     ObjectDataRow,
     setupTestBed
@@ -36,9 +38,12 @@ import { ProcessServiceCloudTestingModule } from '../../../testing/process-servi
 import { TranslateModule } from '@ngx-translate/core';
 import { ProcessListCloudSortingModel } from '../models/process-list-sorting.model';
 import { PROCESS_LISTS_PREFERENCES_SERVICE_TOKEN } from '../../../services/cloud-token.service';
-import { LocalPreferenceCloudService } from '../../../services/local-preference-cloud.service';
 import { ProcessListCloudPreferences } from '../models/process-cloud-preferences';
 import { PROCESS_LIST_CUSTOM_VARIABLE_COLUMN } from '../../../models/data-column-custom-data';
+import { HttpClientModule } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PreferenceCloudServiceInterface } from '@alfresco/adf-process-services-cloud';
 
 @Component({
     template: `
@@ -59,25 +64,12 @@ class CustomTaskListComponent {
     processListCloud: ProcessListCloudComponent;
 }
 
-@Component({
-    template: `
-        <adf-cloud-process-list>
-            <adf-custom-empty-content-template>
-                <p id="custom-id">TEST</p>
-            </adf-custom-empty-content-template>
-        </adf-cloud-process-list>
-    `
-})
-
-class EmptyTemplateComponent {
-}
-
 describe('ProcessListCloudComponent', () => {
     let component: ProcessListCloudComponent;
     let fixture: ComponentFixture<ProcessListCloudComponent>;
     let appConfig: AppConfigService;
     let processListCloudService: ProcessListCloudService;
-    let preferencesService: LocalPreferenceCloudService;
+    let preferencesService: PreferenceCloudServiceInterface;
     const fakeCustomSchemaName = 'fakeCustomSchema';
     const schemaWithVariable = 'schemaWithVariableId';
 
@@ -91,7 +83,7 @@ describe('ProcessListCloudComponent', () => {
     beforeEach(() => {
         appConfig = TestBed.inject(AppConfigService);
         processListCloudService = TestBed.inject(ProcessListCloudService);
-        preferencesService = TestBed.inject<LocalPreferenceCloudService>(PROCESS_LISTS_PREFERENCES_SERVICE_TOKEN);
+        preferencesService = TestBed.inject<PreferenceCloudServiceInterface>(PROCESS_LISTS_PREFERENCES_SERVICE_TOKEN);
         fixture = TestBed.createComponent(ProcessListCloudComponent);
         component = fixture.componentInstance;
         appConfig.config = Object.assign(appConfig.config, {
@@ -386,6 +378,48 @@ describe('ProcessListCloudComponent', () => {
         expect(component.columns[0].width).toBe(120);
     });
 
+    it('should update columns widths when a column width gets changed', () => {
+        spyOn(preferencesService, 'updatePreference').and.returnValue(of({}));
+        component.appName = 'fake-app-name';
+        component.reload();
+        fixture.detectChanges();
+
+        const newColumns = [...component.columns];
+        newColumns[0].width = 120;
+        component.onColumnsWidthChanged(newColumns);
+
+        expect(component.columns[0].width).toBe(120);
+        expect(preferencesService.updatePreference).toHaveBeenCalledWith('fake-app-name', 'processes-cloud-columns-widths', {
+            id: 120
+        });
+    });
+
+    it('should update columns widths while preserving previously saved widths when a column width gets changed', () => {
+        spyOn(preferencesService, 'updatePreference').and.returnValue(of({}));
+        component.appName = 'fake-app-name';
+        component.reload();
+        fixture.detectChanges();
+
+        const newColumns = [...component.columns];
+        newColumns[0].width = 120;
+        component.onColumnsWidthChanged(newColumns);
+
+        expect(component.columns[0].width).toBe(120);
+        expect(preferencesService.updatePreference).toHaveBeenCalledWith('fake-app-name', 'processes-cloud-columns-widths', {
+            id: 120
+        });
+
+        newColumns[1].width = 150;
+        component.onColumnsWidthChanged(newColumns);
+
+        expect(component.columns[0].width).toBe(120);
+        expect(component.columns[1].width).toBe(150);
+        expect(preferencesService.updatePreference).toHaveBeenCalledWith('fake-app-name', 'processes-cloud-columns-widths', {
+            id: 120,
+            startDate: 150
+        });
+    });
+
     it('should re-create columns when a column order gets changed', () => {
         component.appName = 'FAKE-APP-NAME';
 
@@ -558,14 +592,37 @@ describe('ProcessListCloudComponent', () => {
 
     describe('Creating an empty custom template - EmptyTemplateComponent', () => {
 
+        @Component({
+            template: `
+                 <adf-cloud-process-list #processListCloud>
+                     <adf-custom-empty-content-template>
+                         <p id="custom-id">TEST</p>
+                     </adf-custom-empty-content-template>
+                 </adf-cloud-process-list>
+            `
+        })
+
+        class EmptyTemplateComponent {
+            @ViewChild(ProcessListCloudComponent)
+            processListCloud: ProcessListCloudComponent;
+        }
+
         let fixtureEmpty: ComponentFixture<EmptyTemplateComponent>;
+        preferencesService = jasmine.createSpyObj('preferencesService', {
+            getPreferences: of({}),
+            updatePreference: of({})
+        });
 
         setupTestBed({
             imports: [
                 TranslateModule.forRoot(),
-                ProcessServiceCloudTestingModule
+                HttpClientModule,
+                NoopAnimationsModule,
+                DataTableModule,
+                MatProgressSpinnerModule
             ],
-            declarations: [EmptyTemplateComponent]
+            providers: [{ provide: PROCESS_LISTS_PREFERENCES_SERVICE_TOKEN, useValue: preferencesService }],
+            declarations: [EmptyTemplateComponent, ProcessListCloudComponent, CustomEmptyContentTemplateDirective]
         });
 
         beforeEach(() => {
@@ -577,14 +634,16 @@ describe('ProcessListCloudComponent', () => {
             fixtureEmpty.destroy();
         });
 
-        it('should render the custom template', fakeAsync((done) => {
+        it('should render the custom template', async () => {
             const emptyList = {list: {entries: []}};
             spyOn(processListCloudService, 'getProcessByRequest').and.returnValue(of(emptyList));
-            component.success.subscribe(() => {
-                expect(fixtureEmpty.debugElement.query(By.css('#custom-id'))).not.toBeNull();
-                expect(fixtureEmpty.debugElement.query(By.css('.adf-empty-content'))).toBeNull();
-                done();
-            });
-        }));
+            fixtureEmpty.componentInstance.processListCloud.isLoading = false;
+            fixtureEmpty.detectChanges();
+            await fixtureEmpty.whenStable();
+
+            expect(fixtureEmpty.debugElement.query(By.css('#custom-id'))).not.toBeNull();
+            expect(fixtureEmpty.debugElement.query(By.css('.adf-empty-content'))).toBeNull();
+
+        });
     });
 });

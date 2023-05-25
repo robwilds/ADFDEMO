@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -341,6 +341,51 @@ describe('TagService', () => {
                     error: () => {
                         expect(logService.error).toHaveBeenCalledWith(error);
                     }
+                });
+                tick();
+            }));
+        });
+
+        describe('assignTagsToNode', () => {
+            let singleResult: TagEntry;
+            let tags: TagBody[];
+
+            const nodeId = 'some node id';
+
+            beforeEach(() => {
+                singleResult = new TagEntry();
+                singleResult.entry = new Tag();
+                singleResult.entry.tag = 'some name';
+                const tag = new TagBody();
+                tag.tag = 'some name';
+                tags = [tag];
+            });
+
+            it('should call assignTagsToNode on TagsApi with correct parameters', () => {
+                spyOn(service.tagsApi, 'assignTagsToNode').and.returnValue(Promise.resolve(singleResult));
+
+                service.assignTagsToNode(nodeId, tags);
+                expect(service.tagsApi.assignTagsToNode).toHaveBeenCalledWith(nodeId, tags);
+            });
+
+            it('should return observable which emits paging object for tags', fakeAsync(() => {
+                const pagingResult = mockTagPaging();
+                const tag2 = new TagBody();
+                tag2.tag = 'some other tag';
+                tags.push(tag2);
+                spyOn(service.tagsApi, 'assignTagsToNode').and.returnValue(Promise.resolve(pagingResult));
+
+                service.assignTagsToNode(nodeId, tags).subscribe((tagsResult) => {
+                    expect(tagsResult).toEqual(pagingResult);
+                });
+                tick();
+            }));
+
+            it('should return observable which emits single tag', fakeAsync(() => {
+                spyOn(service.tagsApi, 'assignTagsToNode').and.returnValue(Promise.resolve(singleResult));
+
+                service.assignTagsToNode(nodeId, tags).subscribe((tagsResult) => {
+                    expect(tagsResult).toEqual(singleResult);
                 });
                 tick();
             }));

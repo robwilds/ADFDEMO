@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import {
     CategoriesApi,
     CategoryBody,
     CategoryEntry,
+    CategoryLinkBody,
     CategoryPaging,
     RequestQuery,
     ResultSetPaging,
@@ -55,6 +56,21 @@ export class CategoryService {
      */
     getSubcategories(parentCategoryId: string, skipCount?: number, maxItems?: number): Observable<CategoryPaging> {
         return from(this.categoriesApi.getSubcategories(parentCategoryId ?? '-root-', {skipCount, maxItems}));
+    }
+
+    /**
+     * Get a category by ID
+     *
+     * @param categoryId The identifier of a category.
+     * @param opts Optional parameters.
+     * @param opts.fields A list of field names.
+     * @param opts.include Returns additional information about the category. The following optional fields can be requested:
+     * count
+     * path
+     * @return Observable<CategoryEntry>
+     */
+    getCategory(categoryId: string, opts?: any): Observable<CategoryEntry> {
+        return from(this.categoriesApi.getCategory(categoryId, opts));
     }
 
     /**
@@ -110,5 +126,37 @@ export class CategoryService {
             },
             include: ['path']
         }));
+    }
+
+    /**
+     * List of categories that node is assigned to
+     *
+     * @param nodeId The identifier of a node.
+     * @return Observable<CategoryPaging> Categories that node is assigned to
+     */
+    getCategoryLinksForNode(nodeId: string): Observable<CategoryPaging> {
+        return from(this.categoriesApi.getCategoryLinksForNode(nodeId, {include: ['path']}));
+    }
+
+    /**
+     * Unlink category from a node
+     *
+     * @param nodeId The identifier of a node.
+     * @param categoryId The identifier of a category.
+     * @return Observable<void>
+     */
+     unlinkNodeFromCategory(nodeId: string, categoryId: string): Observable<void> {
+        return from(this.categoriesApi.unlinkNodeFromCategory(nodeId, categoryId));
+    }
+
+    /**
+     * Link node to a category
+     *
+     * @param nodeId The identifier of a node.
+     * @param categoryLinkBodyCreate Array of a categories that node will be linked to.
+     * @return Observable<CategoryEntry>
+     */
+     linkNodeToCategory(nodeId: string, categoryLinkBodyCreate: CategoryLinkBody[]): Observable<CategoryPaging | CategoryEntry> {
+        return from(this.categoriesApi.linkNodeToCategory(nodeId, categoryLinkBodyCreate));
     }
 }

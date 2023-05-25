@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ export * from './components/library-status-column/library-status-column.componen
 export * from './components/name-column/name-column.component';
 export * from './components/filter-header/filter-header.component';
 export * from './components/trashcan-name-column/trashcan-name-column.component';
+export * from './components/file-auto-download/file-auto-download.component';
 
 // data
 export * from './data/share-datatable-adapter';

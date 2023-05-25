@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@ import { throwError } from 'rxjs';
 import { setupTestBed, AppConfigService, AlfrescoApiService, CoreTestingModule } from '@alfresco/adf-core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppsProcessCloudService } from './apps-process-cloud.service';
-import { fakeApplicationInstance } from '../mock/app-model.mock';
+import { fakeApplicationInstance, fakeApplicationInstanceWithEnvironment } from '../mock/app-model.mock';
 import { ProcessServiceCloudTestingModule } from '../../testing/process-service-cloud.testing.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { fakeEnvironmentList } from '../../common/mock/environment.mock';
 
 describe('AppsProcessCloudService', () => {
 
@@ -102,5 +103,16 @@ describe('AppsProcessCloudService', () => {
                     expect(error.error).toEqual('Mock Error');
                 }
             );
+    });
+
+
+    it('should return label with application name', () => {
+        const applicationLabel = service.getApplicationLabel(fakeApplicationInstance[0]);
+        expect(applicationLabel).toBe('application-new-1');
+    });
+
+    it('should return label with application name and environment name', () => {
+        const applicationLabel = service.getApplicationLabel(fakeApplicationInstanceWithEnvironment[0], fakeEnvironmentList);
+        expect(applicationLabel).toBe('application-new-1 (test-env-name-1)');
     });
 });

@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,6 +157,9 @@ export abstract class BaseTaskListCloudComponent<T = unknown> extends DataTableS
         if (changes['sorting']) {
             this.formatSorting(changes['sorting'].currentValue);
         }
+        if (changes['appName']) {
+            this.retrieveTasksPreferences();
+        }
         this.reload();
     }
 
@@ -165,7 +168,8 @@ export abstract class BaseTaskListCloudComponent<T = unknown> extends DataTableS
         this.onDestroy$.complete();
     }
 
-    ngAfterContentInit() {
+    private retrieveTasksPreferences(): void {
+        this.isLoading = true;
         this.cloudPreferenceService.getPreferences(this.appName).pipe(
             take(1),
             map((preferences => {
@@ -194,8 +198,16 @@ export abstract class BaseTaskListCloudComponent<T = unknown> extends DataTableS
             }
 
             this.createDatatableSchema();
-        }
-        );
+            this.createColumns();
+            this.isLoading = false;
+        }, (error) => {
+            this.error.emit(error);
+            this.isLoading = false;
+        });
+    }
+
+    ngAfterContentInit(): void {
+        this.retrieveTasksPreferences();
     }
 
     isListEmpty(): boolean {
@@ -304,12 +316,14 @@ export abstract class BaseTaskListCloudComponent<T = unknown> extends DataTableS
     }
 
     onColumnsWidthChanged(columns: DataColumn[]): void {
-        this.columnsWidths = columns.reduce((widthsColumnsMap, column) => {
+        const newColumnsWidths = columns.reduce((widthsColumnsMap, column) => {
             if (column.width) {
                 widthsColumnsMap[column.id] = Math.ceil(column.width);
             }
             return widthsColumnsMap;
         }, {});
+
+        this.columnsWidths = {...this.columnsWidths, ...newColumnsWidths};
 
         this.createColumns();
 

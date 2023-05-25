@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import { ProcessFiltersCloudModule } from '../process-filters-cloud.module';
 import { ProcessFilterCloudModel } from '../models/process-filter-cloud.model';
 import { ProcessFilterCloudService } from '../services/process-filter-cloud.service';
 import { AppsProcessCloudService } from '../../../app/services/apps-process-cloud.service';
-import { fakeApplicationInstance } from './../../../app/mock/app-model.mock';
+import { fakeApplicationInstance, fakeApplicationInstanceWithEnvironment } from './../../../app/mock/app-model.mock';
 import moment from 'moment';
 import { PROCESS_FILTERS_SERVICE_TOKEN } from '../../../services/cloud-token.service';
 import { LocalPreferenceCloudService } from '../../../services/local-preference-cloud.service';
@@ -41,6 +41,7 @@ import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { ProcessDefinitionCloud } from '../../../models/process-definition-cloud.model';
 import { mockAppVersions } from '../mock/process-filters-cloud.mock';
 import { DATE_FORMAT_CLOUD } from '../../../models/date-format-cloud.model';
+import { fakeEnvironmentList } from '../../../common/mock/environment.mock';
 
 describe('EditProcessFilterCloudComponent', () => {
     let component: EditProcessFilterCloudComponent;
@@ -440,16 +441,6 @@ describe('EditProcessFilterCloudComponent', () => {
 
             const orderOptions = fixture.debugElement.queryAll(By.css('.mat-option-text'));
             expect(orderOptions.length).toEqual(2);
-        });
-    });
-
-    it('should have floating labels when values are present', async () => {
-        fixture.detectChanges();
-        await fixture.whenStable();
-
-        const inputLabelsNodes = document.querySelectorAll('mat-form-field');
-        inputLabelsNodes.forEach(labelNode => {
-            expect(labelNode.getAttribute('ng-reflect-float-label')).toBe('auto');
         });
     });
 
@@ -1170,5 +1161,14 @@ describe('EditProcessFilterCloudComponent', () => {
 
             expect(component.initiatorOptions).toEqual([{ username: 'user1' }, { username: 'user2' }]);
         });
+    });
+
+    it('should add environment name to each application selector option label', () => {
+        component.environmentList = fakeEnvironmentList;
+        component.environmentId = fakeEnvironmentList[0].id;
+
+        getRunningApplicationsSpy.and.returnValue(of(fakeApplicationInstanceWithEnvironment));
+        component.getRunningApplications();
+        expect(component.applicationNames[0].label).toBe('application-new-1 (test-env-name-1)');
     });
 });

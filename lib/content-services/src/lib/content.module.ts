@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ import { TreeModule } from './tree/tree.module';
 import { AlfrescoViewerModule } from './viewer/alfresco-viewer.module';
 import { ContentUserInfoModule } from './content-user-info/content-user-info.module';
 import { SecurityControlsServiceModule } from './security/services/security-controls-service.module';
+import { CategoriesModule } from './category/category.module';
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import { SecurityControlsServiceModule } from './security/services/security-cont
         TreeModule,
         SearchTextModule,
         AlfrescoViewerModule,
-        SecurityControlsServiceModule
+        SecurityControlsServiceModule,
+        CategoriesModule
     ],
     providers: [
         {
@@ -123,7 +125,8 @@ import { SecurityControlsServiceModule } from './security/services/security-cont
         TreeModule,
         SearchTextModule,
         AlfrescoViewerModule,
-        SecurityControlsServiceModule
+        SecurityControlsServiceModule,
+        CategoriesModule
     ]
 })
 export class ContentModule {

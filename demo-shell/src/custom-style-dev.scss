@@ -3,10 +3,10 @@
 @import '../../lib/core/src/lib/styles/typography';
 @include mat.core;
 
-$primary: mat.define-palette($alfresco-accent-orange);
+$primary: mat.define-palette($alfresco-ecm-blue);
 $accent: mat.define-palette($alfresco-accent-purple);
 $warn: mat.define-palette($alfresco-warn);
-$theme: mat.define-light-theme(
+$theme: mat.define-dark-theme(
     (
         color: (
             primary: $primary,

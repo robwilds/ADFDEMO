@@ -4,7 +4,7 @@
       "TYPE-AUTH": "Тип авторизации",
       "BASIC": "Базовая авторизация",
       "SSO": "SSO",
-      "IMPLICIT-FLOW": "Неявный поток",
+      "IMPLICIT-FLOW": "Implicit Flow",
       "PROVIDER": "Поставщик",
       "REQUIRED": "Поле обязательно для заполнения",
       "CS_URL_ERROR": "Адрес Content Services не соответствует формату URL",

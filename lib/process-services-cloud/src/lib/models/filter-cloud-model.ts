@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ export class TaskQueryCloudRequestModel {
     appName: string;
     appVersion?: string;
     assignee?: string;
+    environmentId?: string;
     claimedDate?: string;
     createdDate?: Date;
     createdFrom?: string;
@@ -56,6 +57,7 @@ export class TaskQueryCloudRequestModel {
             this.appName = obj.appName;
             this.appVersion = obj.appVersion;
             this.assignee = obj.assignee;
+            this.environmentId = obj.environmentId;
             this.claimedDate = obj.claimedDate;
             this.createdDate = obj.createdDate;
             this.createdFrom = obj.createdFrom;

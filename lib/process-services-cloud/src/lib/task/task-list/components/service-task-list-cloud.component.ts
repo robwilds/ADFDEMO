@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,6 @@ export class ServiceTaskListCloudComponent extends BaseTaskListCloudComponent {
         this.requestNode = this.createRequestNode();
 
         if (this.requestNode.appName || this.requestNode.appName === '') {
-            this.isLoading = true;
 
             combineLatest([
                 this.serviceTaskListCloudService.getServiceTaskByRequest(this.requestNode),
@@ -63,7 +62,6 @@ export class ServiceTaskListCloudComponent extends BaseTaskListCloudComponent {
                 ([tasks]) => {
                     this.rows = tasks.list.entries;
                     this.success.emit(tasks);
-                    this.isLoading = false;
                     this.pagination.next(tasks.list.pagination);
                 }, (error) => {
                     this.error.emit(error);
@@ -81,6 +79,7 @@ export class ServiceTaskListCloudComponent extends BaseTaskListCloudComponent {
             skipCount: this.skipCount,
             sorting: this.sorting,
             id: this.queryParams?.serviceTaskId,
+            environmentId: this.queryParams?.environmentId,
             activityName: this.queryParams?.activityName,
             activityType: this.queryParams?.activityType,
             completedDate: this.queryParams?.completedDate,

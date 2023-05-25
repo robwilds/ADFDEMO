@@ -277,15 +277,33 @@
                         [formatTooltip]="getNodeNameTooltip"
                         class="app-ellipsis-cell adf-expand-cell-5">
                     </data-column>
+                    <data-column
+                        key="properties.MTA:doctype"
+                        type="text"
+                        format=""
+                        title="Document Type">
+                    </data-column>
+                    <data-column
+                        key="properties.MTA:lirrpartno"
+                        type="text"
+                        format=""
+                        title="Part No">
+                    </data-column>
+                    <data-column
+                        key="properties.MTA:fleet"
+                        type="text"
+                        format=""
+                        title="Fleet">
+                    </data-column>
                     <!-- Location column demo -->
-                    <!--
+                    
                     <data-column
                         key="path"
                         type="location"
                         format="/files"
                         title="Location">
                     </data-column>
-                    -->
+                   
                     <data-column
                         key="content.sizeInBytes"
                         title="{{'DOCUMENT_LIST.COLUMNS.SIZE' | translate}}"
@@ -293,7 +311,7 @@
                         sortingKey="sizeInBytes"
                         class="app-desktop-only adf-ellipsis-cell">
                     </data-column>
-                    <data-column
+                    <!-- <data-column
                         *ngIf="searchTerm"
                         key="search"
                         title="Search"
@@ -302,7 +320,7 @@
                             <div [innerHTML]="searchResultsHighlight(entry.row.node.entry.search) | highlight:searchTerm">
                             </div>
                         </ng-template>
-                    </data-column>
+                    </data-column> -->
                     <!-- Notes: has performance overhead due to multiple files/folders causing separate HTTP calls to get tags -->
                     <!--
                     <data-column
@@ -314,14 +332,14 @@
                         </ng-template>
                     </data-column>
                     -->
-                    <data-column
+                    <!-- <data-column
                         class="app-full-width adf-ellipsis-cell adf-desktop-only"
                         title="{{'DOCUMENT_LIST.COLUMNS.NODE_ID' | translate}}"
                         [sortable]="false"
                         key="id">
-                    </data-column>
+                    </data-column> -->
 
-                    <data-column
+                    <!-- <data-column
                         title="{{'DOCUMENT_LIST.COLUMNS.IS_LOCKED' | translate}}"
                         key="lock"
                         [focus]="false"
@@ -333,7 +351,7 @@
                                 <mat-icon *ngIf="!entry.row.getValue('isLocked')">lock_open</mat-icon>
                             </button>
                         </ng-template>
-                    </data-column>
+                    </data-column> -->
                     <data-column
                         title="{{'DOCUMENT_LIST.COLUMNS.CREATED_BY' | translate}}"
                         key="createdByUser.displayName"
@@ -652,6 +670,42 @@
                 placeholder="NodeEntry[] => [{ entry: { isFile: true, id: 'node-id' }}, { entry: { isFile: true, id: 'node-id' }} ]">
             </mat-form-field>
         </form>
+
+        <section>
+            <mat-slide-toggle
+                color="primary" [(ngModel)]="enableDownloadPrompt" id="enableDownloadPrompt" (change)="onEnableDownloadPrompt()">
+                Enable Download Prompt
+            </mat-slide-toggle>
+        </section>
+        <section *ngIf="enableDownloadPrompt">
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="downloadPromptDelay" (change)="onDownloadPromptDelayChange()">
+            </mat-form-field>
+        </section>
+
+        <section *ngIf="enableDownloadPrompt">
+            <mat-slide-toggle
+                color="primary" [(ngModel)]="enableDownloadPromptReminder" id="enableDownloadPromptReminders" (change)="onEnableDownloadPromptReminderChange()">
+                Enable Download Prompt Reminders
+            </mat-slide-toggle>
+        </section>
+        <section *ngIf="enableDownloadPrompt && enableDownloadPromptReminder">
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="downloadPromptReminderDelay" (change)="onDownloadPromptReminderChange()">
+            </mat-form-field>
+        </section>
+
+        <section>
+            <mat-slide-toggle
+                color="primary" [(ngModel)]="enableFileAutoDownload" id="enableFileAutoDownload" (change)="onEnableFileAutoDownloadChange()">
+                Enable FileAutoDownload
+            </mat-slide-toggle>
+        </section>
+        <section *ngIf="enableFileAutoDownload">
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="fileAutoDownloadSizeThresholdInMB" (change)="onFileAutoDownloadSizeThresholdChange()">
+            </mat-form-field>
+        </section>
 
         <h5>Upload</h5>
         <section *ngIf="acceptedFilesTypeShow">

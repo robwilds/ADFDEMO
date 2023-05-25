@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,11 @@ import { SearchFacetFiltersService } from '../../services/search-facet-filters.s
 })
 export class SearchChipListComponent {
 
+    /**
+     * Search filter to supply the data for the chips.
+     * Not required from 4.5.0 and later versions @deprecated
+     * */
     @Input()
-    /** This is not required since ADF 4.5.0  @deprecated*/
     searchFilter: SearchFilterComponent;
 
     /** Flag used to enable the display of a clear-all-filters button. */

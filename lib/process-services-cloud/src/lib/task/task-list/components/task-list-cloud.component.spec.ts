@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,20 @@
  */
 
 import { Component, SimpleChange, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AppConfigService, setupTestBed, DataRowEvent, ObjectDataRow, User, DataColumn, ColumnsSelectorComponent } from '@alfresco/adf-core';
+import { AppConfigService,
+         setupTestBed,
+         DataRowEvent,
+         ObjectDataRow,
+         User,
+         DataColumn,
+         ColumnsSelectorComponent,
+         AlfrescoApiService,
+         AlfrescoApiServiceMock,
+         AppConfigServiceMock,
+         TranslationService,
+         TranslationMock } from '@alfresco/adf-core';
 import { TaskListCloudService } from '../services/task-list-cloud.service';
 import { TaskListCloudComponent } from './task-list-cloud.component';
 import { fakeGlobalTasks, fakeCustomSchema, fakeGlobalTask } from '../mock/fake-task-response.mock';
@@ -28,7 +39,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TaskListCloudSortingModel } from '../../../models/task-list-sorting.model';
 import { shareReplay, skip } from 'rxjs/operators';
 import { TaskListCloudServiceInterface } from '../../../services/task-list-cloud.service.interface';
-import { TASK_LIST_CLOUD_TOKEN } from '../../../services/cloud-token.service';
+import { TASK_LIST_CLOUD_TOKEN, TASK_LIST_PREFERENCES_SERVICE_TOKEN } from '../../../services/cloud-token.service';
+import { TaskListCloudModule } from '../task-list-cloud.module';
+import { HttpClientModule } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { PreferenceCloudServiceInterface } from '../../../services/preference-cloud.interface';
 
 @Component({
     template: `
@@ -82,19 +97,24 @@ describe('TaskListCloudComponent', () => {
     let fixture: ComponentFixture<TaskListCloudComponent>;
     let appConfig: AppConfigService;
     let taskListCloudService: TaskListCloudServiceInterface;
+    const preferencesService: PreferenceCloudServiceInterface = jasmine.createSpyObj('preferencesService', {
+        getPreferences: of({}),
+        updatePreference: of({})
+    });
 
     setupTestBed({
         imports: [
             TranslateModule.forRoot(),
             ProcessServiceCloudTestingModule
         ],
-        declarations: [
-            EmptyTemplateComponent
-        ],
         providers: [
             {
                 provide: TASK_LIST_CLOUD_TOKEN,
                 useClass: TaskListCloudService
+            },
+            {
+                provide: TASK_LIST_PREFERENCES_SERVICE_TOKEN,
+                useValue: preferencesService
             }
         ]
     });
@@ -149,15 +169,13 @@ describe('TaskListCloudComponent', () => {
         spyOn(taskListCloudService, 'getTaskByRequest').and.returnValue(of(emptyList));
 
         fixture.detectChanges();
-        expect(component.isLoading).toBe(true);
-        let loadingContent = fixture.debugElement.query(By.css('mat-progress-spinner'));
-        expect(loadingContent.nativeElement).toBeDefined();
+        expect(component.isLoading).toBe(false);
 
         const appName = new SimpleChange(null, 'FAKE-APP-NAME', true);
         component.ngOnChanges({ appName });
         fixture.detectChanges();
 
-        loadingContent = fixture.debugElement.query(By.css('mat-progress-spinner'));
+        const loadingContent = fixture.debugElement.query(By.css('mat-progress-spinner'));
         expect(loadingContent).toBeFalsy();
 
         const emptyContent = fixture.debugElement.query(By.css('.adf-empty-content'));
@@ -169,15 +187,13 @@ describe('TaskListCloudComponent', () => {
         const appName = new SimpleChange(null, 'FAKE-APP-NAME', true);
 
         fixture.detectChanges();
-        expect(component.isLoading).toBe(true);
-        let loadingContent = fixture.debugElement.query(By.css('mat-progress-spinner'));
-        expect(loadingContent.nativeElement).toBeDefined();
+        expect(component.isLoading).toBe(false);
 
         component.ngOnChanges({ appName });
         fixture.detectChanges();
 
         expect(component.isLoading).toBe(false);
-        loadingContent = fixture.debugElement.query(By.css('mat-progress-spinner'));
+        const loadingContent = fixture.debugElement.query(By.css('mat-progress-spinner'));
         expect(loadingContent).toBeFalsy();
 
         const emptyContent = fixture.debugElement.query(By.css('.adf-empty-content'));
@@ -295,6 +311,46 @@ describe('TaskListCloudComponent', () => {
         component.onColumnsWidthChanged(newColumns);
 
         expect(component.columns[0].width).toBe(120);
+    });
+
+    it('should update columns widths when a column width gets changed', () => {
+        component.appName = 'fake-app-name';
+        component.reload();
+        fixture.detectChanges();
+
+        const newColumns = [...component.columns];
+        newColumns[0].width = 120;
+        component.onColumnsWidthChanged(newColumns);
+
+        expect(component.columns[0].width).toBe(120);
+        expect(preferencesService.updatePreference).toHaveBeenCalledWith('fake-app-name', 'tasks-list-cloud-columns-widths', {
+            name: 120
+        });
+    });
+
+    it('should update columns widths while preserving previously saved widths when a column width gets changed', () => {
+        component.appName = 'fake-app-name';
+        component.reload();
+        fixture.detectChanges();
+
+        const newColumns = [...component.columns];
+        newColumns[0].width = 120;
+        component.onColumnsWidthChanged(newColumns);
+
+        expect(component.columns[0].width).toBe(120);
+        expect(preferencesService.updatePreference).toHaveBeenCalledWith('fake-app-name', 'tasks-list-cloud-columns-widths', {
+            name: 120
+        });
+
+        newColumns[1].width = 150;
+        component.onColumnsWidthChanged(newColumns);
+
+        expect(component.columns[0].width).toBe(120);
+        expect(component.columns[1].width).toBe(150);
+        expect(preferencesService.updatePreference).toHaveBeenCalledWith('fake-app-name', 'tasks-list-cloud-columns-widths', {
+            name: 120,
+            created: 150
+        });
     });
 
     it('should re-create columns when a column order gets changed', () => {
@@ -523,6 +579,20 @@ describe('TaskListCloudComponent', () => {
     describe('Creating an empty custom template - EmptyTemplateComponent', () => {
         let fixtureEmpty: ComponentFixture<EmptyTemplateComponent>;
 
+        setupTestBed({
+            imports: [
+                HttpClientModule,
+                NoopAnimationsModule,
+                TranslateModule.forRoot(),
+                TaskListCloudModule
+            ],
+            providers: [
+                { provide: AlfrescoApiService, useClass: AlfrescoApiServiceMock },
+                { provide: AppConfigService, useClass: AppConfigServiceMock },
+                { provide: TranslationService, useClass: TranslationMock }
+            ]
+        });
+
         beforeEach(() => {
             const emptyList = { list: { entries: [] } };
             spyOn(taskListCloudService, 'getTaskByRequest').and.returnValue(of(emptyList));
@@ -535,16 +605,12 @@ describe('TaskListCloudComponent', () => {
             fixtureEmpty.destroy();
         });
 
-        // TODO still not working because of the Loading Spinner
-        // eslint-disable-next-line
-        xit('should render the custom template', (done) => {
+        it('should render the custom template', async () => {
             fixtureEmpty.detectChanges();
-            fixtureEmpty.whenStable().then(() => {
-                fixtureEmpty.detectChanges();
-                expect(fixtureEmpty.debugElement.query(By.css('#custom-id'))).not.toBeNull();
-                expect(fixtureEmpty.debugElement.query(By.css('.adf-empty-content'))).toBeNull();
-                done();
-            });
+            await fixtureEmpty.whenStable();
+            fixtureEmpty.detectChanges();
+            expect(fixtureEmpty.debugElement.query(By.css('#custom-id'))).not.toBeNull();
+            expect(fixtureEmpty.debugElement.query(By.css('.adf-empty-content'))).toBeNull();
         });
     });
 
@@ -581,7 +647,7 @@ describe('TaskListCloudComponent', () => {
                                 sortable: true
                             },
                             {
-                                key: 'entry.priority',
+                                key: 'priority',
                                 type: 'text',
                                 title: 'ADF_TASK_LIST.PROPERTIES.PRIORITY',
                                 sortable: true
@@ -602,45 +668,34 @@ describe('TaskListCloudComponent', () => {
             fixture.destroy();
         });
 
-        // TODO: highly unstable test
-        // eslint-disable-next-line
-        xit('should show tooltip if config copyContent flag is true', fakeAsync(() => {
+        it('should show tooltip if config copyContent flag is true', fakeAsync(() => {
             taskSpy.and.returnValue(of(fakeGlobalTasks));
             const appName = new SimpleChange(null, 'FAKE-APP-NAME', true);
-
-            component.success.subscribe(() => {
-                fixture.whenStable().then(() => {
-                    fixture.detectChanges();
-                    const spanHTMLElement = element.querySelector<HTMLInputElement>('span[title="11fe013d-c263-11e8-b75b-0a5864600540"]');
-                    spanHTMLElement.dispatchEvent(new Event('mouseenter'));
-                    fixture.detectChanges();
-                    expect(fixture.debugElement.nativeElement.querySelector('.adf-copy-tooltip')).not.toBeNull();
-                });
-            });
 
             component.presetColumn = 'fakeCustomSchema';
             component.appName = appName.currentValue;
             component.ngOnChanges({ appName });
             component.ngAfterContentInit();
+
+            tick();
+            fixture.detectChanges();
+            const spanHTMLElement = element.querySelector<HTMLInputElement>('span[title="11fe013d-c263-11e8-b75b-0a5864600540"]');
+            spanHTMLElement.dispatchEvent(new Event('mouseenter'));
+            fixture.detectChanges();
+            expect(fixture.debugElement.nativeElement.querySelector('.adf-copy-tooltip')).not.toBeNull();
         }));
 
-        // TODO: highly unstable test
-        // eslint-disable-next-line
-        xit('should replace priority values', (done) => {
+        it('should replace priority values', fakeAsync(() => {
             taskSpy.and.returnValue(of(fakeGlobalTasks));
             component.presetColumn = 'fakeCustomSchema';
             const appName = new SimpleChange(null, 'FAKE-APP-NAME', true);
             component.ngOnChanges({ appName });
-
-            component.success.subscribe(() => {
-                const cell = fixture.nativeElement.querySelector('[data-automation-id="text_ADF_CLOUD_TASK_LIST.PROPERTIES.PRIORITY_VALUES.NONE"]');
-                expect(cell.textContent).toEqual('ADF_CLOUD_TASK_LIST.PROPERTIES.PRIORITY_VALUES.NONE');
-                done();
-            });
-
             fixture.detectChanges();
             component.reload();
-        });
+            tick();
+            const cell = fixture.nativeElement.querySelector('[data-automation-id="text_ADF_CLOUD_TASK_LIST.PROPERTIES.PRIORITY_VALUES.NONE"]');
+            expect(cell.textContent).toEqual('ADF_CLOUD_TASK_LIST.PROPERTIES.PRIORITY_VALUES.NONE');
+        }));
 
         it('replacePriorityValues should return undefined when no rows defined', () => {
             const emptyList = { list: { entries: [] } };

@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ export * from './lib/services/public-api';
 export * from './lib/rich-text-editor/public-api';
 
 export * from './lib/types';
+export * from './lib/common/index';
 export * from './lib/pipes/process-name-cloud.pipe';
 export * from './lib/pipes/process-services-cloud-pipe.module';
 export * from './lib/models/process-definition-cloud.model';

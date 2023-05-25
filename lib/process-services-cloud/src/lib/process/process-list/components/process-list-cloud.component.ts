@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,10 @@ export class ProcessListCloudComponent extends DataTableSchema<ProcessListDataCo
     /** Filter the processes to display only the ones with this ID. */
     @Input()
     id: string = '';
+
+    /** Filter the processes to display only the ones with this environment ID. */
+    @Input()
+    environmentId: string;
 
     /** Filter the processes to display only the ones with this name. */
     @Input()
@@ -394,12 +398,14 @@ export class ProcessListCloudComponent extends DataTableSchema<ProcessListDataCo
     }
 
     onColumnsWidthChanged(columns: DataColumn[]): void {
-        this.columnsWidths = columns.reduce((widthsColumnsMap, column) => {
+        const newColumnsWidths = columns.reduce((widthsColumnsMap, column) => {
             if (column.width) {
                 widthsColumnsMap[column.id] = Math.ceil(column.width);
             }
             return widthsColumnsMap;
         }, {});
+
+        this.columnsWidths = {...this.columnsWidths, ...newColumnsWidths};
 
         this.createColumns();
 
@@ -455,6 +461,7 @@ export class ProcessListCloudComponent extends DataTableSchema<ProcessListDataCo
             skipCount: this.skipCount,
             initiator: this.initiator,
             id: this.id,
+            environmentId: this.environmentId,
             name: this.name,
             processDefinitionId: this.processDefinitionId,
             processDefinitionName: this.processDefinitionName,

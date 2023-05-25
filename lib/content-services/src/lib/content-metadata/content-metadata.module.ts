@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,17 @@ import { MaterialModule } from '../material.module';
 import { CoreModule } from '@alfresco/adf-core';
 import { ContentMetadataComponent } from './components/content-metadata/content-metadata.component';
 import { ContentMetadataCardComponent } from './components/content-metadata-card/content-metadata-card.component';
+import { TagModule } from '../tag/tag.module';
+import { CategoriesModule } from '../category/category.module';
 
 @NgModule({
     imports: [
         CommonModule,
         MaterialModule,
         FlexLayoutModule,
-        CoreModule
+        CoreModule,
+        TagModule,
+        CategoriesModule
     ],
     exports: [
         ContentMetadataComponent,

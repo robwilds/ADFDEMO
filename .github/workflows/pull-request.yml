@@ -93,6 +93,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Check package-lock.json version
         run: |
           if [[ $(jq '.lockfileVersion == 2' package-lock.json) == "true" ]] ; then
@@ -107,26 +108,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+         fetch-depth: 0
 
       - name: Get branch name
         uses: Alfresco/alfresco-build-tools/.github/actions/get-branch-name@v1.36.0
+
+      - name: Save commit message
+        uses: Alfresco/alfresco-build-tools/.github/actions/get-commit-message@v1.36.0
 
       - name: ci:force flag parser
         shell: bash
         run: |
           if [ "${{ github.event_name }}" == "schedule" ] || [ "${{ github.actor }}" == "dependabot[bot]" ]; then
-              echo -e "\033[32mci:force check can be skipped\033[0m"
-              exit 0
-          else
-            git fetch --all
-            message=$(git log --format=%B -n 1 origin/$BRANCH_NAME)
-            echo "COMMIT_MESSAGE=$message" >> $GITHUB_ENV
-            export COMMIT_MESSAGE=$message
-            if [[ "$COMMIT_MESSAGE" == *"[ci:force]"* ]]; then
-              echo "Forcing CI to run with commit flag [ci:force]."
-              echo CI_FORCE_RUN=true >> $GITHUB_ENV
-              echo "BREAK_ACTION=true" >> $GITHUB_ENV
-            fi
+            echo -e "\033[32mci:force check can be skipped\033[0m"
+            skip_check="true"
+          elif [[ "$COMMIT_MESSAGE" == *"[ci:force]"* ]]; then
+              echo -e "\033[32m[ci:force] flag detected. No need for approval.\033[0m"
+              skip_check="true"
           fi
 
       - name: Get PR number
@@ -134,7 +133,7 @@ jobs:
         uses: kamatama41/get-pr-number-action@5c77b38a1b4974ebf8a9521a689f38a5898eadd6
         id: action
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: show pr number
         shell: bash
@@ -147,10 +146,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           skip_check: "false"
         run: |
-          echo "ci force run: $CI_FORCE_RUN"
-          if [ "${CI_FORCE_RUN}" == "true" ]; then
-              echo -e "\033[32m[ci:force] flag detected. No need for approval.\033[0m"
-              skip_check="true"
+          if [ "${{ github.event_name }}" == "schedule" ] || [ "${{ github.actor }}" == "dependabot[bot]" ]; then
+            echo -e "\033[32mci:force check can be skipped\033[0m"
+            skip_check="true"
+          elif [[ "$COMMIT_MESSAGE" == *"[ci:force]"* ]]; then
+            echo -e "\033[32m[ci:force] flag detected. No need for approval.\033[0m"
+            skip_check="true"
           fi
 
           if [ "${{ github.actor }}" == "dependabot[bot]" ] || [ "${{ github.actor }}" == "alfresco-build" ]; then
@@ -301,42 +302,49 @@ jobs:
             auth: "OAUTH"
             check-cs-env: "true"
             check-ps-env: "true"
+            deps: "testing"
           - description: "Content: Components"
             test-id: "content-services"
             folder: "content-services/components"
             provider: "ECM"
             auth: "BASIC"
             check-cs-env: "true"
+            deps: "testing"
           - description: "Content: Directives"
             test-id: "content-services"
             folder: "content-services/directives"
             provider: "ECM"
             auth: "BASIC"
             check-cs-env: "true"
+            deps: "testing"
           - description: "Content: Document List"
             test-id: "content-services"
             folder: "content-services/document-list"
             provider: "ECM"
             auth: "BASIC"
             check-cs-env: "true"
+            deps: "testing"
           - description: "Content: Metadata"
             test-id: "content-services"
             folder: "content-services/metadata"
             provider: "ECM"
             auth: "BASIC"
             check-cs-env: "true"
+            deps: "testing"
           - description: "Content: Upload and Versioning"
             test-id: "content-services"
             folder: "content-services/upload"
             provider: "ECM"
             auth: "BASIC"
             check-cs-env: "true"
+            deps: "testing"
           - description: "Search"
             test-id: "content-services"
             folder: "search"
             provider: "ECM"
             auth: "BASIC"
             check-cs-env: "true"
+            deps: "testing"
           - description: "Process: Form"
             test-id: "process-services"
             folder: "process-services/form"
@@ -344,6 +352,7 @@ jobs:
             auth: "OAUTH"
             check-ps-env: "true"
             check-external-cs-env: "true"
+            deps: "testing"
           - description: "Process: Process"
             test-id: "process-services"
             folder: "process-services/process"
@@ -351,6 +360,7 @@ jobs:
             auth: "OAUTH"
             check-ps-env: "true"
             check-external-cs-env: "true"
+            deps: "testing"
           - description: "Process: Tasks"
             test-id: "process-services"
             folder: "process-services/tasks"
@@ -358,6 +368,7 @@ jobs:
             auth: "OAUTH"
             check-ps-env: "true"
             check-external-cs-env: "true"
+            deps: "testing"
           - description: "Process: Widget"
             test-id: "process-services"
             folder: "process-services/widgets"
@@ -365,6 +376,7 @@ jobs:
             auth: "OAUTH"
             check-ps-env: "true"
             check-external-cs-env: "true"
+            deps: "testing"
           - description: "Process Cloud: Form"
             test-id: "process-services-cloud"
             folder: "process-services-cloud/form-field"
@@ -373,6 +385,7 @@ jobs:
             apa-proxy: true
             check-cs-env: "true"
             check-ps-cloud-env: "true"
+            deps: "testing"
           - description: "Process Cloud: People"
             test-id: "process-services-cloud"
             folder: "process-services-cloud/people"
@@ -381,6 +394,7 @@ jobs:
             apa-proxy: true
             check-cs-env: "true"
             check-ps-cloud-env: "true"
+            deps: "testing"
           - description: "Process Cloud: Process"
             test-id: "process-services-cloud"
             folder: "process-services-cloud/process"
@@ -389,6 +403,7 @@ jobs:
             apa-proxy: true
             check-cs-env: "true"
             check-ps-cloud-env: "true"
+            deps: "testing"
           - description: "Process Cloud: Start Task"
             test-id: "process-services-cloud"
             folder: "process-services-cloud/start-task"
@@ -397,6 +412,7 @@ jobs:
             apa-proxy: true
             check-cs-env: "true"
             check-ps-cloud-env: "true"
+            deps: "testing"
           - description: "Process Cloud: Tasks List"
             test-id: "process-services-cloud"
             folder: "process-services-cloud/task-list"
@@ -405,6 +421,7 @@ jobs:
             apa-proxy: true
             check-cs-env: "true"
             check-ps-cloud-env: "true"
+            deps: "testing"
 
     steps:
       - name: Checkout repository
@@ -430,6 +447,33 @@ jobs:
           check-ps-cloud-env: ${{ matrix.e2e-test.check-ps-cloud-env }}
           check-external-cs-env: ${{ matrix.e2e-test.check-external-cs-env }}
           apa-proxy: ${{ matrix.e2e-test.apa-proxy }}
+          deps: ${{ matrix.e2e-test.deps }}
+
+  PR-forbidden-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkoutRepo
+        name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: PR contains forbidden labels
+        id: pr-forbidden
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueHasLabels = require('./scripts/github/update/check-issue-has-label.js');
+            const checkLabels = ['next version ➡️', 'do not merge🙅🏻‍♂️'];
+
+            const hasLabel = await issueHasLabels({github, context, checkLabels})
+
+            if(hasLabel) {
+              core.setFailed('The PR contains a forbidden label! You are not allowed to merge until the label is there.');
+            }
+      - name: Check value after
+        run: |
+          echo "result ${{ toJson(steps.pr-forbidden.*.result) }}" && echo "result ${{ steps.pr-forbidden.*.result }}"
+          echo "result ${{ contains(toJson(steps.pr-forbidden.*.result), 'failure') }}"
 
   finalize:
     if: ${{ always() }}

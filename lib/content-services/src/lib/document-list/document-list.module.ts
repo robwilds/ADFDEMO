@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ import { LibraryRoleColumnComponent } from './components/library-role-column/lib
 import { LibraryNameColumnComponent } from './components/library-name-column/library-name-column.component';
 import { NameColumnComponent } from './components/name-column/name-column.component';
 import { FilterHeaderComponent } from './components/filter-header/filter-header.component';
+import { FileAutoDownloadComponent } from './components/file-auto-download/file-auto-download.component';
+import { ContentDirectiveModule } from '../directives/content-directive.module';
 
 @NgModule({
     imports: [
@@ -45,7 +47,8 @@ import { FilterHeaderComponent } from './components/filter-header/filter-header.
         MaterialModule,
         UploadModule,
         EditJsonDialogModule,
-        SearchModule
+        SearchModule,
+        ContentDirectiveModule
     ],
     declarations: [
         DocumentListComponent,
@@ -56,7 +59,8 @@ import { FilterHeaderComponent } from './components/filter-header/filter-header.
         NameColumnComponent,
         ContentActionComponent,
         ContentActionListComponent,
-        FilterHeaderComponent
+        FilterHeaderComponent,
+        FileAutoDownloadComponent
     ],
     exports: [
         DocumentListComponent,

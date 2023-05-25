@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ import { ContentService } from '../../common/services/content.service';
 import { NodesApiService } from '../../common/services/nodes-api.service';
 import { UploadService } from '../../common/services/upload.service';
 import { FileModel } from '../../common/models/file.model';
+import { NodeActionsService } from '../../document-list';
 
 @Component({
     selector: 'adf-alfresco-viewer',
@@ -238,7 +239,8 @@ export class AlfrescoViewerComponent implements OnChanges, OnInit, OnDestroy {
                 private contentService: ContentService,
                 private uploadService: UploadService,
                 public dialog: MatDialog,
-                private cdr: ChangeDetectorRef) {
+                private cdr: ChangeDetectorRef,
+                private nodeActionsService: NodeActionsService) {
         renditionService.maxRetries = this.maxRetries;
 
     }
@@ -449,4 +451,7 @@ export class AlfrescoViewerComponent implements OnChanges, OnInit, OnDestroy {
         this.onDestroy$.complete();
     }
 
+    onDownloadFile() {
+        this.nodeActionsService.downloadNode(this.nodeEntry);
+    }
 }

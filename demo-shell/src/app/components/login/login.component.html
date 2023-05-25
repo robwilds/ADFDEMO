@@ -1,6 +1,6 @@
 <!--BPM, ECN AND CSRF TOGGLE-->
 
-<div class="app-settings">
+<!--div class="app-settings">
     <p class="app-toggle">
         <mat-slide-toggle
             id="switch3"
@@ -68,15 +68,15 @@
         </ng-container>
     </p>
 
-</div>
+</div-->
 
 <!--SETTING BUTTON-->
 
 <a mat-fab class="app-setting-button" data-automation-id="settings" href="" routerLink="/settings" color="accent">
     <mat-icon>settings</mat-icon>
 </a>
-
 <adf-login
+    [backgroundImageUrl]="'https://new.mta.info/sites/default/files/banner/FTC_5181_desktop%20%281%29.jpg'" 
     [successRoute]="customSuccessRouteURI"
     [logoImageUrl]="customLogoImageURL"
     [showLoginActions]="showFooter"
@@ -84,7 +84,7 @@
     copyrightText="{{ 'application.copyright' | adfAppConfig }}"
     (success)="onLogin()"
     (error)="onError($event)">
-    <div class="app-mobile-settings">
+    <!--div class="app-mobile-settings">
         <p>
             <mat-slide-toggle
                 id="switch3-mobile"
@@ -112,5 +112,5 @@
             data-automation-id="settings">{{ 'APP_LAYOUT.SETTINGS'| translate }}
         </button>
 
-    </div>
+    </div-->
 </adf-login>

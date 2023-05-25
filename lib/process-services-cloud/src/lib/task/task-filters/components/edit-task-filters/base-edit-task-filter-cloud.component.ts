@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { IdentityUserModel } from '../../../../people/models/identity-user.model';
 import { IdentityGroupModel } from '../../../../group/models/identity-group.model';
 import { MatSelectChange } from '@angular/material/select';
+import { Environment } from '../../../../common/interface/environment.interface';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -67,6 +68,10 @@ export abstract class BaseEditTaskFilterCloudComponent<T> implements OnInit, OnC
     @Input()
     id: string;
 
+    /** List of environments. */
+    @Input()
+    environmentList: Environment[] = [];
+
     /** processInstanceId of the task filter. */
     @Input()
     processInstanceId: string;
@@ -99,14 +104,6 @@ export abstract class BaseEditTaskFilterCloudComponent<T> implements OnInit, OnC
     @Input()
     sortProperties: string[] = [];
 
-    /** Task Filter to use*/
-    @Input()
-    taskFilter: T;
-
-    /** Emitted when a task filter property changes. */
-    @Output()
-    filterChange = new EventEmitter<T>();
-
     /** Emitted when a filter action occurs (i.e Save, Save As, Delete). */
     @Output()
     action = new EventEmitter<TaskFilterAction>();
@@ -129,7 +126,15 @@ export abstract class BaseEditTaskFilterCloudComponent<T> implements OnInit, OnC
         label: 'ADF_CLOUD_TASK_FILTERS.STATUS.ALL'
     };
 
+    /** Task Filter to use. */
+    @Input()
+    taskFilter: T;
+
     changedTaskFilter: T;
+
+    /** Emitted when a task filter property changes. */
+    @Output()
+    filterChange = new EventEmitter<T>();
 
     protected onDestroy$ = new Subject<boolean>();
     isLoading: boolean = false;
@@ -244,7 +249,7 @@ export abstract class BaseEditTaskFilterCloudComponent<T> implements OnInit, OnC
             .subscribe((applications) => {
                 if (applications && applications.length > 0) {
                     applications.map((application) => {
-                        this.applicationNames.push({ label: application.name, value: application.name });
+                        this.applicationNames.push({ label: this.appsProcessCloudService.getApplicationLabel(application, this.environmentList), value: application.name });
                     });
                 }
             });

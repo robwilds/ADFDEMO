@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
     links: Array<any> = [
         { href: '/home', icon: 'home', title: 'APP_LAYOUT.HOME' },
-        {
+        /* {
             href: '/extensions', icon: 'extension', title: 'Extensions', children: [
                 { href: '/extensions/document-list/presets', icon: 'extension', title: 'Document List' }
             ]
-        },
+        }, */
         { href: '/files', icon: 'folder_open', title: 'APP_LAYOUT.CONTENT_SERVICES' },
         { href: '/filtered-search', icon: 'rowing', title: 'APP_LAYOUT.FILTERED_SEARCH' },
         { href: '/breadcrumb', icon: 'label', title: 'APP_LAYOUT.BREADCRUMB' },
@@ -47,7 +47,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         { href: '/header-data', icon: 'edit', title: 'APP_LAYOUT.HEADER_DATA' },
         { href: '/node-selector', icon: 'attachment', title: 'APP_LAYOUT.NODE-SELECTOR' },
         { href: '/sites', icon: 'format_list_bulleted', title: 'APP_LAYOUT.SITES' },
-        { href: '/task-list', icon: 'assignment', title: 'APP_LAYOUT.TASK_LIST' },
+    { href: '/task-list', icon: 'assignment', title: 'APP_LAYOUT.TASK_LIST' },
         {
             href: '/cloud', icon: 'cloud', title: 'APP_LAYOUT.PROCESS_CLOUD', children: [
                 { href: '/cloud/', icon: 'cloud', title: 'APP_LAYOUT.HOME' },
@@ -88,7 +88,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         { href: '/treeview', icon: 'nature', title: 'APP_LAYOUT.TREE_VIEW' },
         { href: '/expandable-list', icon: 'hot_tub', title: 'APP_LAYOUT.EXPAND_LIST' },
         { href: '/icons', icon: 'tag_faces', title: 'APP_LAYOUT.ICONS' },
-        { href: '/about', icon: 'info_outline', title: 'APP_LAYOUT.ABOUT' }
+       { href: '/about', icon: 'info_outline', title: 'APP_LAYOUT.ABOUT' }
     ];
 
     expandedSidenav = false;
@@ -101,9 +101,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
     enableRedirect = true;
     color: ThemePalette = 'primary';
-    title = 'APP_LAYOUT.APP_NAME';
+    title = 'LIRR Master List'; //'APP_LAYOUT.APP_NAME';
     logo: string;
-    redirectUrl: string | any[] = ['/home'];
+    redirectUrl: string | any[] = ['/search-filter-chips'];
     tooltip = 'APP_LAYOUT.APP_NAME';
 
     ngOnInit() {

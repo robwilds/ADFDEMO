@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -250,6 +250,13 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
     hyperlinkNavigation = false;
 
     selectedNodes = [];
+
+    enableDownloadPrompt: boolean = this.appConfig.get('viewer.enableDownloadPrompt', false);
+    enableDownloadPromptReminder: boolean = this.appConfig.get('viewer.enableDownloadPromptReminders', false);
+    downloadPromptDelay = this.appConfig.get('viewer.downloadPromptDelay', 50);
+    downloadPromptReminderDelay = this.appConfig.get('viewer.downloadPromptReminderDelay', 30);
+    enableFileAutoDownload: boolean = this.appConfig.get('viewer.enableFileAutoDownload', true);
+    fileAutoDownloadSizeThresholdInMB: number = this.appConfig.get('viewer.fileAutoDownloadSizeThresholdInMB', 15);
 
     constructor(private notificationService: NotificationService,
                 private uploadService: UploadService,
@@ -775,6 +782,36 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
 
     onMultipleFilesUpload() {
         this.selectedNodes = [];
+    }
+
+    onEnableDownloadPrompt() {
+        const previewConfig = this.appConfig?.config['viewer'];
+        previewConfig['enableDownloadPrompt'] = this.enableDownloadPrompt;
+    }
+
+    onDownloadPromptDelayChange() {
+        const previewConfig = this.appConfig?.config['viewer'];
+        previewConfig['downloadPromptDelay'] = this.downloadPromptDelay;
+    }
+
+    onEnableDownloadPromptReminderChange() {
+        const previewConfig = this.appConfig?.config['viewer'];
+        previewConfig['enableDownloadPromptReminder'] = this.enableDownloadPromptReminder;
+    }
+
+    onDownloadPromptReminderChange() {
+        const previewConfig = this.appConfig?.config['viewer'];
+        previewConfig['downloadPromptReminderDelay'] = this.downloadPromptReminderDelay;
+    }
+
+    onEnableFileAutoDownloadChange() {
+        const previewConfig = this.appConfig?.config['viewer'];
+        previewConfig['enableFileAutoDownload'] = this.enableFileAutoDownload;
+    }
+
+    onFileAutoDownloadSizeThresholdChange() {
+        const previewConfig = this.appConfig?.config['viewer'];
+        previewConfig['fileAutoDownloadSizeThresholdInMB'] = this.fileAutoDownloadSizeThresholdInMB;
     }
 
 }

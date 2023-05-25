@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ export class SearchFilterChipsComponent implements OnInit, OnDestroy {
     sorting = ['name', 'asc'];
     searchForms: SearchForm[];
     showHeader = ShowHeaderMode.Always;
+    
 
     private onDestroy$ = new Subject<boolean>();
 

@@ -6,10 +6,10 @@
                 <adf-search-form></adf-search-form>
             </div>
 
-            <mat-divider [vertical]="true"></mat-divider>
+            <mat-divider [vertical]="false"></mat-divider>
 
-            <div style="padding: 0 12px; flex: 65%">
-                <adf-search-filter-chips></adf-search-filter-chips>
+            <div style="padding: 12px 12px; flex: 65%">
+                <adf-search-filter-chips [showContextFacets]="false"></adf-search-filter-chips>
             </div>
 
             <mat-icon adf-reset-search matTooltip="reset" style="padding-right: 5px;">refresh</mat-icon>
@@ -22,7 +22,7 @@
             [sortingMode]="'server'"
             [showRecentFiles]="false"
             [showSitePicker]="false"
-            [showSettingsPanel]="false"
+            [showSettingsPanel]="true"
             [currentFolderId]="null"
             [nodeResult]="$any(data)"
             [disableDragArea]="true"

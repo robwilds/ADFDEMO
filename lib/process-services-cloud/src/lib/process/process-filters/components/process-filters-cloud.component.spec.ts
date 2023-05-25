@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ describe('ProcessFiltersCloudComponent', () => {
         fixture.detectChanges();
         await fixture.whenStable();
 
-        const filters = fixture.debugElement.queryAll(By.css('.adf-filters__entry'));
+        const filters = fixture.debugElement.queryAll(By.css('.adf-process-filters__entry'));
         expect(component.filters.length).toBe(3);
         expect(filters.length).toBe(3);
         expect(filters[0].nativeElement.innerText).toContain('FakeAllProcesses');
@@ -110,7 +110,7 @@ describe('ProcessFiltersCloudComponent', () => {
         expect(filters[2].nativeElement.innerText).toContain('FakeCompletedProcesses');
     });
 
-    it('should emit an error with a bad response', async() => {
+    it('should emit an error with a bad response', async () => {
         const mockErrorFilterList = {
             error: 'wrong request'
         };

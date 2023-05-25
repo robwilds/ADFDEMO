@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import { ContentTestingModule } from '../../testing/content.testing.module';
 import { NodeAspectService } from './node-aspect.service';
 import { DialogAspectListService } from './dialog-aspect-list.service';
 import { CardViewContentUpdateService } from '../../common/services/card-view-content-update.service';
+import { TagService } from '@alfresco/adf-content-services';
 
 describe('NodeAspectService', () => {
 
@@ -99,4 +100,13 @@ describe('NodeAspectService', () => {
         nodeAspectService.updateNodeAspects('fake-node-id');
     });
 
+    it('should call emit on refresh from TagService', () => {
+        const tagService = TestBed.inject(TagService);
+        spyOn(dialogAspectListService, 'openAspectListDialog').and.returnValue(of([]));
+        const node = new MinimalNode({ id: 'fake-node-id', aspectNames: ['a', 'b', 'c'] });
+        spyOn(nodeApiService, 'updateNode').and.returnValue(of(node));
+        spyOn(tagService.refresh, 'emit');
+        nodeAspectService.updateNodeAspects('some node id', 'some-selector');
+        expect(tagService.refresh.emit).toHaveBeenCalled();
+    });
 });

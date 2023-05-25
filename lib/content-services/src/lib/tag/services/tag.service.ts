@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,7 +96,7 @@ export class TagService {
      * @param tag Name of the tag to remove
      * @returns Null object when the operation completes
      */
-    removeTag(nodeId: string, tag: string): Observable<any> {
+    removeTag(nodeId: string, tag: string): Observable<void> {
         const observableRemove = from(this.tagsApi.deleteTagFromNode(nodeId, tag));
 
         observableRemove.subscribe((data) => {
@@ -150,10 +150,8 @@ export class TagService {
      * @param maxItems Specify max number of returned tags. Default is specified by UserPreferencesService.
      * @returns Found tags which name contains searched name.
      */
-    searchTags(name: string, sorting = {
-        orderBy: 'tag',
-        direction: 'asc'
-    }, includedCounts?: boolean, skipCount = 0, maxItems?: number): Observable<TagPaging> {
+    searchTags(name: string, sorting = { orderBy: 'tag', direction: 'asc' },
+               includedCounts?: boolean, skipCount = 0, maxItems?: number): Observable<TagPaging> {
         maxItems = maxItems || this.userPreferencesService.paginationSize;
         return this.getAllTheTags({
             tag: `*${name}*`,
@@ -187,6 +185,20 @@ export class TagService {
      */
     deleteTag(tagId: string): Observable<void> {
         return from(this.tagsApi.deleteTag(tagId)).pipe(
+            tap((data) => this.refresh.emit(data))
+        );
+    }
+
+    /**
+     * Assign tags to node. If tag is new then tag is also created additionally, if tag already exists then it is just assigned.
+     *
+     * @param nodeId Id of node to which tags should be assigned.
+     * @param tags List of tags to create and assign or just assign if they already exist.
+     *
+     * @return Just linked tags to node or single tag if linked only one tag.
+     */
+    assignTagsToNode(nodeId: string, tags: TagBody[]): Observable<TagPaging | TagEntry> {
+        return from(this.tagsApi.assignTagsToNode(nodeId, tags)).pipe(
             tap((data) => this.refresh.emit(data))
         );
     }

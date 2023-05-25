@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -950,7 +950,7 @@ export class DataTableComponent implements OnInit, AfterContentInit, OnChanges, 
 
     onResizing({ rectangle: { width } }: ResizeEvent, colIndex: number): void {
         const timeoutId = setTimeout(() => {
-            const allColumns = this.data.getColumns();
+            const allColumns = this.data.getColumns().filter(column => !column.isHidden);
             allColumns[colIndex].width = width;
             this.data.setColumns(allColumns);
 

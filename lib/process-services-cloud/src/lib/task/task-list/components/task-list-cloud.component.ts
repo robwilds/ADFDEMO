@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,6 +88,10 @@ export class TaskListCloudComponent extends BaseTaskListCloudComponent<ProcessLi
     /** Filter the tasks. Display only tasks with the supplied name. */
     @Input()
     name: string = '';
+
+    /** Filter the tasks to display only the ones with this environment ID. */
+    @Input()
+    environmentId: string;
 
     /** Filter the tasks. Display only tasks with parentTaskId equal to the supplied value. */
     @Input()
@@ -190,6 +194,7 @@ export class TaskListCloudComponent extends BaseTaskListCloudComponent<ProcessLi
             assignee: this.assignee,
             id: this.id,
             name: this.name,
+            environmentId: this.environmentId,
             parentTaskId: this.parentTaskId,
             processDefinitionName: this.processDefinitionName,
             processDefinitionId: this.processDefinitionId,

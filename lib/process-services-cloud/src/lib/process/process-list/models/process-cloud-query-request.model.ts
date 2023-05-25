@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ export class ProcessQueryCloudRequestModel {
    appVersion?: number | string;
    initiator?: null;
    id?: string;
+   environmentId?: string;
    name?: string;
    processDefinitionId?: string;
    processDefinitionName?: string;
@@ -50,6 +51,7 @@ export class ProcessQueryCloudRequestModel {
            this.appVersion = obj.appVersion;
            this.initiator = obj.initiator;
            this.id = obj.id;
+           this.environmentId = obj.environmentId;
            this.name = obj.name;
            this.processDefinitionId = obj.processDefinitionId;
            this.processDefinitionName = obj.processDefinitionName;

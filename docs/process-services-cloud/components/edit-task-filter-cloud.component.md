@@ -2,7 +2,7 @@
 Title: Edit Task Filter Cloud component
 Added: v3.0.0
 Status: Experimental
-Last reviewed: 2019-03-27
+Last reviewed: 2023-04-03
 ---
 
 # [Edit Task Filter Cloud component](../../../lib/process-services-cloud/src/lib/task/task-filters/components/edit-task-filters/edit-task-filter-cloud.component.ts "Defined in edit-task-filter-cloud.component.ts")
@@ -45,6 +45,7 @@ Edits task filter details.
 | ---- | ---- | ------------- | ----------- |
 | actions | `string[]` |  | List of task filter actions. |
 | appName | `string` | "" | (required) Name of the app. |
+| environmentList | [`Environment`](../../../lib/process-services-cloud/src/lib/common/interface/environment.interface.ts)`[]` | \[] | List of environments. |
 | filterProperties | `string[]` | \[] | List of task filter properties to display. |
 | id | `string` |  | (required) ID of the task filter. |
 | processInstanceId | `string` |  | processInstanceId of the task filter. |
@@ -53,7 +54,7 @@ Edits task filter details.
 | showTaskFilterName | `boolean` | true | Toggles display of task filter name |
 | showTitle | `boolean` | true | Toggles the title. |
 | sortProperties | `string[]` | \[] | List of sort properties to display. |
-| taskFilter | [`TaskFilterCloudModel`](../../../lib/process-services-cloud/src/lib/task/task-filters/models/filter-cloud.model.ts) |  | Task Filter to use |
+| taskFilter | [`TaskFilterCloudModel`](../../../lib/process-services-cloud/src/lib/task/task-filters/models/filter-cloud.model.ts) |  | Task Filter to use. |
 
 ### Events
 

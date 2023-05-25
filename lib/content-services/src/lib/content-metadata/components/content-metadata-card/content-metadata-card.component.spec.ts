@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,8 @@ describe('ContentMetadataCardComponent', () => {
             content: {},
             properties: {},
             createdByUser: {},
-            modifiedByUser: {}
+            modifiedByUser: {},
+            id: 'some-id'
         } as Node;
 
         component.node = node;
@@ -89,6 +90,14 @@ describe('ContentMetadataCardComponent', () => {
         const contentMetadataComponent = fixture.debugElement.query(By.directive(ContentMetadataComponent)).componentInstance;
 
         expect(contentMetadataComponent.node).toBe(node);
+    });
+
+    it('should assign true to displayTags for ContentMetadataComponent', () => {
+        expect(fixture.debugElement.query(By.directive(ContentMetadataComponent)).componentInstance.displayTags).toBeTrue();
+    });
+
+    it('should assign true to displayCategories for ContentMetadataComponent', () => {
+        expect(fixture.debugElement.query(By.directive(ContentMetadataComponent)).componentInstance.displayCategories).toBeTrue();
     });
 
     it('should pass through the preset to the underlying component', () => {

@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2019 Alfresco Software, Ltd.
+ * Copyright © 2005-2023 Hyland Software, Inc. and its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1966,6 +1966,38 @@ describe('Column Resizing', () => {
         const columns = dataTable.data.getColumns();
         expect(columns[0].width).toBe(65);
         expect(adapter.setColumns).toHaveBeenCalledWith(columns);
+    }));
+
+    it('should set column widths while resizing ONLY on visible columns', fakeAsync(() => {
+        const adapter = dataTable.data;
+        spyOn(adapter, 'getColumns').and.returnValue([
+            {
+                key: 'name',
+                type: 'text',
+                width: 110,
+                isHidden: true
+            },
+            {
+                key: 'status',
+                type: 'text',
+                width: 120,
+                isHidden: false
+            },
+            {
+                key: 'created',
+                type: 'text',
+                width: 150
+            }
+        ]);
+        spyOn(adapter, 'setColumns').and.callThrough();
+
+        dataTable.onResizing({ rectangle: { top: 0, bottom: 10, left: 0, right: 20, width: 65 } }, 0);
+        tick();
+
+        expect(adapter.setColumns).toHaveBeenCalledWith([
+            { key: 'status', type: 'text', width: 65, isHidden: false },
+            { key: 'created', type: 'text', width: 150 }
+        ]);
     }));
 
     it('should set the column header style on resizing', fakeAsync(() => {

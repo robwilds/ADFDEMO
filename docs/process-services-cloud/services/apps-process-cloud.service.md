@@ -2,7 +2,7 @@
 Title: Apps Process Cloud Service
 Added: v3.0.0
 Status: Experimental
-Last reviewed: 2019-01-09
+Last reviewed: 2023-04-03
 ---
 
 # [Apps Process Cloud Service](../../../lib/process-services-cloud/src/lib/app/services/apps-process-cloud.service.ts "Defined in apps-process-cloud.service.ts")
@@ -13,6 +13,11 @@ Gets details of deployed apps for the current user.
 
 ### Methods
 
+-   **getApplicationLabel**(application: [`ApplicationInstanceModel`](../../../lib/process-services-cloud/src/lib/app/models/application-instance.model.ts), environmentList?: [`Environment`](../../../lib/process-services-cloud/src/lib/common/interface/environment.interface.ts)`[]`): `string`<br/>
+    Gets application label.
+    -   _application:_ [`ApplicationInstanceModel`](../../../lib/process-services-cloud/src/lib/app/models/application-instance.model.ts)  - 
+    -   _environmentList:_ [`Environment`](../../../lib/process-services-cloud/src/lib/common/interface/environment.interface.ts)`[]`  - (Optional) 
+    -   **Returns** `string` - 
 -   **getDeployedApplicationsByStatus**(status: `string`, role?: `string`): [`Observable`](http://reactivex.io/documentation/observable.html)`<`[`ApplicationInstanceModel`](../../../lib/process-services-cloud/src/lib/app/models/application-instance.model.ts)`[]>`<br/>
     Gets a list of deployed apps for this user by status.
     -   _status:_ `string`  - Required status value
