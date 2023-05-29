@@ -19,6 +19,7 @@ import {Component,ViewChild} from '@angular/core';
 import {MatAccordion} from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
 //import { FilesComponent } from '../files/files.component';
+import { AppDefinitionRepresentationModel } from '@alfresco/adf-process-services';
 
 
 @Component({
@@ -39,8 +40,12 @@ export class HomeComponent  {
     ){
         console.log("router",this.router)
         console.log("route",this.route);
+
     }
 
+    onAppClicked(app: AppDefinitionRepresentationModel) {
+        this.router.navigate(['/activiti/apps', app.id || 0, 'tasks']);
+}
     routeToFolder(folderName){
         console.log("folderName",folderName);
         this.navigate(folderName);

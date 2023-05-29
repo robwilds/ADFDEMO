@@ -107,12 +107,13 @@
     
 <div class="app-home-headline"><h1 class="mat-h1">PROCESS SERVICES APPS</h1></div>
 <adf-apps
+    (appClick)="onAppClicked($event)"
     [layoutType]="'GRID'">
 </adf-apps>
 
 <div class="app-home-headline"><h1 class="mat-h1">MY TASKS</h1></div>
 <adf-tasklist 
-    [appId]="2" 
+
     [state]="'open'" 
     [assignment]="'assignee'">
 </adf-tasklist>
