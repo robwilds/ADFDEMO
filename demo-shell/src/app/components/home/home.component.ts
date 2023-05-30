@@ -15,33 +15,74 @@
  * limitations under the License.
  */
 
-import {Component,ViewChild} from '@angular/core';
+import {Component,ViewChild,Input} from '@angular/core';
 import {MatAccordion} from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { FilesComponent } from '../files/files.component';
-import { AppDefinitionRepresentationModel } from '@alfresco/adf-process-services';
+import { UploadService, DiscoveryApiService } from '@alfresco/adf-content-services';
+import { AlfrescoApiService, AppConfigService } from '@alfresco/adf-core';
+import { AppDefinitionRepresentationModel,
+    //TaskListService,
+    TaskAttachmentListComponent,
+    TaskUploadService,
+    //TaskDetailsEvent,
+    //TaskDetailsComponent,
+    //TaskDetailsModel
+} from '@alfresco/adf-process-services';
+//import { PreviewService } from '../../services/preview.service';
 
-
+    export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppConfigService, discoveryApiService: DiscoveryApiService) {
+        return new TaskUploadService(api, config, discoveryApiService);
+    }
 @Component({
     selector: 'app-home-view',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
+    providers: [
+        {
+            provide: UploadService,
+            useFactory: (taskUploadServiceFactory),
+            deps: [AlfrescoApiService, AppConfigService, DiscoveryApiService]
+        }
+    ]
     
 })
 export class HomeComponent  {
     @ViewChild(MatAccordion) accordion: MatAccordion;
     panelOpenState = false;
+    @ViewChild('taskAttachList')
+    taskAttachList: TaskAttachmentListComponent;
+
+    @Input()
+    taskId: string;
+    appId: number;
+    defaultAppId: number;
 
     prefix = "files/"
 
     constructor(
         private router:Router,
-        private route:ActivatedRoute
+        private route:ActivatedRoute,
+            //private uploadService: UploadService,
+            //private activitiTaskList: TaskListService
+            
+
     ){
         console.log("router",this.router)
         console.log("route",this.route);
 
     }
+
+    onFileUploadComplete(content: any) {
+        this.taskAttachList.add(content);
+    }
+
+    /* onAttachmentClick(content: any): void {
+        this.preview.showBlob(content.name, content.contentBlob);
+    } */
+
+    /* isCompletedTask(): boolean {
+        return this.taskDetails && this.taskDetails.endDate !== undefined && this.taskDetails.endDate !== null;
+    } */
 
     onAppClicked(app: AppDefinitionRepresentationModel) {
         this.router.navigate(['/activiti/apps', app.id || 0, 'tasks']);
@@ -57,12 +98,17 @@ export class HomeComponent  {
         else
         {this.router.navigateByUrl(this.prefix + this.getNodeIDByFolderName(folderName));}
     }
+    taskRowClick(){
+        console.log("task clickced");
+        this.router.navigateByUrl('activiti/apps/0/tasks');
 
+    }
     getNodeIDByFolderName(folderName){
         switch(folderName){
-            case 'Trains': return '86f19222-3266-4f0f-b680-d655ae71fcfc';
-            case 'Rails': return 'd17e26bb-0f05-4ce6-8e3f-f538e00b285d';
-            case 'Busses': return 'ed08aca0-cd05-4fc0-935e-b9c016e2847a';
+            //the names and folder nodeIDs below can be changed at will!
+            case 'drawings': return '9ceffb48-0cc0-4341-8720-e16d21166005/';
+            case 'eq': return '0a9f912f-fba4-480d-9ee2-c4f2e894ccf8';
+            case 'airbrakes': return '7d5cb795-9ba5-40cb-97f9-6e93b3e80406';
             default:return '295621ee-6a31-4251-86ac-fb5df2920501';
         }
     }
