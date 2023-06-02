@@ -85,7 +85,9 @@ export class HomeComponent  {
     } */
 
     onAppClicked(app: AppDefinitionRepresentationModel) {
-        this.router.navigate(['/activiti/apps', app.id || 0, 'tasks']);
+        console.log("app id",app.id);
+        //this.router.navigate(['/activiti/apps', app.id || 0, 'tasks']);
+        this.router.navigate(['/activiti/apps', app.id,'processes']);
 }
     routeToFolder(folderName){
         console.log("folderName",folderName);

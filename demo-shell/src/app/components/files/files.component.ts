@@ -100,7 +100,7 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
 
     errorMessage: string = null;
     nodeId: any;
-    showViewer = false;
+    showViewer = true;
     showVersions = false;
     allowDropFiles = true;
     displayMode = DisplayMode.List;
@@ -242,7 +242,7 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
     stickyHeader: boolean;
     preselectNodes: boolean;
     warnOnMultipleUploads = false;
-    thumbnails = false;
+    thumbnails = true;
     noHeaderMode = ShowHeaderMode.Never;
     enableCustomPermissionMessage = false;
     enableMediumTimeFormat = false;
