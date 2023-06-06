@@ -1,5 +1,6 @@
 <header class="app-home-background">
     <div class="app-home-section ad">
+
         <div class="app-home-headline">
             <h1 class="mat-h1">MASTER LIST OF CONTROLLED DOCUMENTS</h1>
             <h3><p>PLEASE NOTE: THE MASTER LIST OF CONTROLLED DOCUMENTS IS FOR MOFE DOCUMENTS ONLY</p></h3>
@@ -11,6 +12,12 @@
               <button mat-button (click)="accordion.openAll()">Expand All</button>
               <button mat-button (click)="accordion.closeAll()">Collapse All</button>
             </div>
+            <!-- <div style="width:600px;height:600px;" cdkDrag>
+              <div class="example-box" cdkDrag>
+                Drag me around
+              </div>
+            </div> -->
+            
 <mat-accordion>
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
@@ -23,7 +30,7 @@
       </mat-expansion-panel-header>
       <div class="app-content-node-selector-demo-basic-table">
         <adf-content-node-selector-panel
-            [currentFolderId]="'9ceffb48-0cc0-4341-8720-e16d21166005/'">
+            [currentFolderId]="'9ceffb48-0cc0-4341-8720-e16d21166005'">
         </adf-content-node-selector-panel>
     </div>
     </mat-expansion-panel>
@@ -92,18 +99,17 @@
     <div class="app-home-headline"><h1 class="mat-h1">FAVORITES</h1></div>
     
 <adf-document-list 
-#documentList
+
     [currentFolderId]="'-favorites-'"
     [contextMenuActions]="true"
-    [contentActions]="true">
+    [contentActions]="true"
     [maxItems]="5"
-    [locationFormat]="/files"
-    [preselectNodes]="selectedNodes"
-    [showHeader]="noHeaderMode"
+    [locationFormat]="//files"
     [maxItems]="5"
-    (preview)="showFile($event)"
     [selectionMode]="null"
-</adf-document-list>
+    (preview)="showFile($event)"
+    ></adf-document-list>
+<!--   (preview)="showFile($event)"   -->
     
 <div class="app-home-headline"><h1 class="mat-h1">PROCESS SERVICES APPS</h1></div>
 <adf-apps

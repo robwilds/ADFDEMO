@@ -158,6 +158,7 @@ export class ProcessServiceComponent implements AfterViewInit, OnDestroy, OnInit
     showProcessTab: boolean;
 
     showProcessFilterIcon: boolean;
+
     showTaskFilterIcon: boolean;
     showApplications: boolean;
     applicationId: number;
@@ -189,6 +190,9 @@ export class ProcessServiceComponent implements AfterViewInit, OnDestroy, OnInit
         this.defaultProcessDefinitionName = this.appConfig.get<string>('adf-start-process.processDefinitionName');
         this.defaultTaskName = this.appConfig.get<string>('adf-start-task.name');
         this.processDefinitionName = this.defaultProcessDefinitionName;
+
+        this.showProcessFilterIcon = true;
+        this.showTaskFilterIcon = true;
         // Uncomment this line to replace all 'text' field editors with custom component
         // formRenderingService.setComponentTypeResolver('text', () => CustomEditorComponent, true);
 

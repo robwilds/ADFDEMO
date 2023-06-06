@@ -15,18 +15,16 @@
  * limitations under the License.
  */
 
+
+import { PreviewService } from '../../services/preview.service';
 import {Component,ViewChild,Input} from '@angular/core';
 import {MatAccordion} from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadService, DiscoveryApiService } from '@alfresco/adf-content-services';
 import { AlfrescoApiService, AppConfigService } from '@alfresco/adf-core';
 import { AppDefinitionRepresentationModel,
-    //TaskListService,
     TaskAttachmentListComponent,
     TaskUploadService,
-    //TaskDetailsEvent,
-    //TaskDetailsComponent,
-    //TaskDetailsModel
 } from '@alfresco/adf-process-services';
 //import { PreviewService } from '../../services/preview.service';
 
@@ -37,6 +35,7 @@ import { AppDefinitionRepresentationModel,
     selector: 'app-home-view',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
+    //imports: [CdkDrag,DragDropModule],
     providers: [
         {
             provide: UploadService,
@@ -64,6 +63,7 @@ export class HomeComponent  {
         private route:ActivatedRoute,
             //private uploadService: UploadService,
             //private activitiTaskList: TaskListService
+        private preview: PreviewService
             
 
     ){
@@ -72,6 +72,17 @@ export class HomeComponent  {
 
     }
 
+    showFile(event) {
+        const entry = event.value.entry;
+        if (entry && entry.isFile) {
+            this.preview.showResource(entry.id);
+        }
+    }
+
+    onNodeClicked(event: any)
+    {
+        console.log("event",event)
+    }
     onFileUploadComplete(content: any) {
         this.taskAttachList.add(content);
     }
