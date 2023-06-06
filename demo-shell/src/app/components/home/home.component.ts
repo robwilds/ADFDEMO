@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 
+//import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { PreviewService } from '../../services/preview.service';
 import {Component,ViewChild,Input} from '@angular/core';
 import {MatAccordion} from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UploadService, DiscoveryApiService } from '@alfresco/adf-content-services';
+import { ContentNodeDialogService, UploadService, DiscoveryApiService,RowFilter } from '@alfresco/adf-content-services';
 import { AlfrescoApiService, AppConfigService } from '@alfresco/adf-core';
+import { SitePaging, SiteEntry, MinimalNodeEntryEntity, Node } from '@alfresco/js-api';
 import { AppDefinitionRepresentationModel,
     TaskAttachmentListComponent,
     TaskUploadService,
 } from '@alfresco/adf-process-services';
-//import { PreviewService } from '../../services/preview.service';
+
 
     export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppConfigService, discoveryApiService: DiscoveryApiService) {
         return new TaskUploadService(api, config, discoveryApiService);
@@ -35,7 +37,8 @@ import { AppDefinitionRepresentationModel,
     selector: 'app-home-view',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    //imports: [CdkDrag,DragDropModule],
+    //imports: [DragDropModule],
+    //standalone: true,
     providers: [
         {
             provide: UploadService,
@@ -52,24 +55,48 @@ export class HomeComponent  {
     taskAttachList: TaskAttachmentListComponent;
 
     @Input()
+    showViewer: boolean = false;
+
+    nodeId: string;
+    zindex = "-1";
+   
+
+    @Input()
     taskId: string;
     appId: number;
     defaultAppId: number;
 
     prefix = "files/"
+    dropdownHideMyFiles = false;
+    showFiles = false;
+    showFolders = false;
+    enableImageResolver = false;
+    validSelection = false;
+
+    customSideGuid = '';
+    customSideTitle = '';
+    actualPageSize = 2;
+    
+    rowFilterFunction: RowFilter = null;
+    excludeSiteContentList: string[] = ContentNodeDialogService.nonDocumentSiteContent;
+    customImageResolver: any = null;
+
 
     constructor(
         private router:Router,
         private route:ActivatedRoute,
-            //private uploadService: UploadService,
-            //private activitiTaskList: TaskListService
         private preview: PreviewService
-            
-
     ){
         console.log("router",this.router)
         console.log("route",this.route);
+    }
 
+    showPreview(event) {
+        if (event.value.entry.isFile) {
+            this.zindex = "10000";
+            this.nodeId = event.value.entry.id;
+            this.showViewer = true;
+        }
     }
 
     showFile(event) {
@@ -79,26 +106,67 @@ export class HomeComponent  {
         }
     }
 
+    onClickAddSite() {
+        const newSiteEntry: SiteEntry = new SiteEntry({ entry: { title: this.customSideTitle, guid: this.customSideGuid } });
+        this.customSites.list.entries.push(newSiteEntry);
+        this.customSideGuid = '';
+        this.customSideTitle = '';
+    }
+
+    onClickResetSite() {
+        this.customSites.list.entries = this.defaultSites;
+        this.customSideGuid = '';
+        this.customSideTitle = '';
+    }
+
     onNodeClicked(event: any)
     {
         console.log("event",event)
     }
+
     onFileUploadComplete(content: any) {
         this.taskAttachList.add(content);
     }
+    defaultSites: SiteEntry[] = [
+        new SiteEntry({ entry: { title: 'MINE', guid: '-my-' } }),
+        new SiteEntry({ entry: { title: 'ROOTY', guid: '-root-' } })];
 
-    /* onAttachmentClick(content: any): void {
-        this.preview.showBlob(content.name, content.contentBlob);
-    } */
+    customSites: SitePaging = new SitePaging({
+        list: {
+            entries: [
+                { entry: { title: 'MINE', guid: '-my-' } },
+                { entry: { title: 'ROOTY', guid: '-root-' } }],
+            pagination: {}
+        }
+    });
 
-    /* isCompletedTask(): boolean {
-        return this.taskDetails && this.taskDetails.endDate !== undefined && this.taskDetails.endDate !== null;
-    } */
+    onNodeSelect(selection: Node[]) {
+        console.log("nodeid",selection[0].id);
+        //this.router.navigate([this.prefix, selection[0].id]);
+    }
+
+    customIsValidFunction(entry: MinimalNodeEntryEntity): boolean {
+        return entry.name.startsWith('a') || entry.name.startsWith('A');
+    }
+
+    customBreadcrumbFunction(node: MinimalNodeEntryEntity) {
+        if (node && node.path && node.path.elements) {
+            node.path.elements = node.path.elements.filter((element) => !element.name.toLocaleLowerCase().startsWith('d') ? element : null );
+        }
+        return node;
+    }
 
     onAppClicked(app: AppDefinitionRepresentationModel) {
         console.log("app id",app.id);
-        //this.router.navigate(['/activiti/apps', app.id || 0, 'tasks']);
-        this.router.navigate(['/activiti/apps', app.id,'processes']);
+
+        if(app.id == null){
+
+            this.router.navigate(['/task-list']);
+        } else{
+            this.router.navigate(['/activiti/apps', app.id,'processes']);
+        }
+        //this.router.navigate(['/activiti/apps', app.id ? "0/tasks" : app.id + '/processes']);
+       // this.router.navigate(['/activiti/apps', app.id,'processes']);
 }
     routeToFolder(folderName){
         console.log("folderName",folderName);

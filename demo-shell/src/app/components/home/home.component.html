@@ -1,3 +1,14 @@
+<div style="z-index:{{zindex}};position:fixed;right:100px;top:60px;height:400px;width:400px;">
+  <adf-alfresco-viewer 
+  [(showViewer)]="showViewer"
+  [overlayMode]="false"
+  [nodeId]="nodeId">
+  </adf-alfresco-viewer>
+
+  </div>
+
+
+
 <header class="app-home-background">
     <div class="app-home-section ad">
 
@@ -12,12 +23,9 @@
               <button mat-button (click)="accordion.openAll()">Expand All</button>
               <button mat-button (click)="accordion.closeAll()">Collapse All</button>
             </div>
-            <!-- <div style="width:600px;height:600px;" cdkDrag>
-              <div class="example-box" cdkDrag>
-                Drag me around
-              </div>
-            </div> -->
-            
+
+
+
 <mat-accordion>
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
@@ -29,9 +37,24 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="app-content-node-selector-demo-basic-table">
-        <adf-content-node-selector-panel
-            [currentFolderId]="'9ceffb48-0cc0-4341-8720-e16d21166005'">
-        </adf-content-node-selector-panel>
+
+
+        <adf-document-list
+    currentFolderId="9ceffb48-0cc0-4341-8720-e16d21166005"
+    (preview)="showPreview($event)"
+    ></adf-document-list>
+
+
+
+
+
+        <!-- <adf-content-node-selector-panel
+            [currentFolderId]="'9ceffb48-0cc0-4341-8720-e16d21166005'"
+            (select)="onNodeSelect($event)"
+            [imageResolver]="customImageResolver"
+            [dropdownHideMyFiles]="false"
+            >
+        </adf-content-node-selector-panel> -->
     </div>
     </mat-expansion-panel>
 
@@ -46,11 +69,10 @@
 
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div class="app-content-node-selector-demo-basic-table">
-        <adf-content-node-selector-panel
-            [currentFolderId]="'0a9f912f-fba4-480d-9ee2-c4f2e894ccf8'">
-        </adf-content-node-selector-panel>
-    </div>
+      <adf-document-list
+    currentFolderId="0a9f912f-fba4-480d-9ee2-c4f2e894ccf8"
+    (preview)="showPreview($event)"
+    ></adf-document-list>
     </mat-expansion-panel>
 
 
@@ -64,11 +86,11 @@
         </mat-panel-title>
         <mat-panel-description (click)="routeToFolder('airbrakes')"></mat-panel-description>
       </mat-expansion-panel-header>
-      <div class="app-content-node-selector-demo-basic-table">
-        <adf-content-node-selector-panel
-            [currentFolderId]="'7d5cb795-9ba5-40cb-97f9-6e93b3e80406'">
-        </adf-content-node-selector-panel>
-    </div>
+      <adf-document-list
+    currentFolderId="7d5cb795-9ba5-40cb-97f9-6e93b3e80406"
+    (preview)="showPreview($event)"
+    ></adf-document-list>
+      
     </mat-expansion-panel>
 
           <p></p>
