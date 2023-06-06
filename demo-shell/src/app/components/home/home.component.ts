@@ -165,8 +165,6 @@ export class HomeComponent  {
         } else{
             this.router.navigate(['/activiti/apps', app.id,'processes']);
         }
-        //this.router.navigate(['/activiti/apps', app.id ? "0/tasks" : app.id + '/processes']);
-       // this.router.navigate(['/activiti/apps', app.id,'processes']);
 }
     routeToFolder(folderName){
         console.log("folderName",folderName);
