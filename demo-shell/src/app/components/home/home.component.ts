@@ -18,21 +18,18 @@
 //import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { PreviewService } from '../../services/preview.service';
-import {Component,ViewChild,Input} from '@angular/core';
-import {MatAccordion} from '@angular/material/expansion';
+import { Component,ViewChild,Input } from '@angular/core';
+import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentNodeDialogService, UploadService, DiscoveryApiService,RowFilter } from '@alfresco/adf-content-services';
 import { AlfrescoApiService, AppConfigService } from '@alfresco/adf-core';
 import { SitePaging, SiteEntry, MinimalNodeEntryEntity, Node } from '@alfresco/js-api';
-import { AppDefinitionRepresentationModel,
-    TaskAttachmentListComponent,
-    TaskUploadService,
-} from '@alfresco/adf-process-services';
+import { AppDefinitionRepresentationModel,TaskAttachmentListComponent,TaskUploadService } from '@alfresco/adf-process-services';
 
-
-    export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppConfigService, discoveryApiService: DiscoveryApiService) {
+export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppConfigService, discoveryApiService: DiscoveryApiService) {
         return new TaskUploadService(api, config, discoveryApiService);
     }
+
 @Component({
     selector: 'app-home-view',
     templateUrl: './home.component.html',
@@ -46,6 +43,7 @@ import { AppDefinitionRepresentationModel,
     ]
     
 })
+
 export class HomeComponent  {
     @ViewChild(MatAccordion) accordion: MatAccordion;
     panelOpenState = false;
@@ -125,7 +123,7 @@ export class HomeComponent  {
     onFileUploadComplete(content: any) {
         this.taskAttachList.add(content);
     }
-    
+
     defaultSites: SiteEntry[] = [
         new SiteEntry({ entry: { title: 'MINE', guid: '-my-' } }),
         new SiteEntry({ entry: { title: 'ROOTY', guid: '-root-' } })];
