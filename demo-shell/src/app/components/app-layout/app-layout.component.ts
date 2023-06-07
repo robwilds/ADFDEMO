@@ -108,7 +108,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
     enableRedirect = true;
     color: ThemePalette = 'primary';
-    title = 'LIRR Master List'; //'APP_LAYOUT.APP_NAME';
+    title = 'APP_LAYOUT.APP_NAME';
     logo: string;
     redirectUrl: string | any[] = ['/search-filter-chips'];
     tooltip = 'APP_LAYOUT.APP_NAME';
