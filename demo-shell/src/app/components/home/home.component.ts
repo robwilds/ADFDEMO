@@ -37,8 +37,6 @@ import { AppDefinitionRepresentationModel,
     selector: 'app-home-view',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    //imports: [DragDropModule],
-    //standalone: true,
     providers: [
         {
             provide: UploadService,
@@ -51,6 +49,7 @@ import { AppDefinitionRepresentationModel,
 export class HomeComponent  {
     @ViewChild(MatAccordion) accordion: MatAccordion;
     panelOpenState = false;
+
     @ViewChild('taskAttachList')
     taskAttachList: TaskAttachmentListComponent;
 
@@ -60,7 +59,6 @@ export class HomeComponent  {
     nodeId: string;
     zindex = "-1";
    
-
     @Input()
     taskId: string;
     appId: number;
@@ -127,6 +125,7 @@ export class HomeComponent  {
     onFileUploadComplete(content: any) {
         this.taskAttachList.add(content);
     }
+    
     defaultSites: SiteEntry[] = [
         new SiteEntry({ entry: { title: 'MINE', guid: '-my-' } }),
         new SiteEntry({ entry: { title: 'ROOTY', guid: '-root-' } })];
