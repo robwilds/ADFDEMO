@@ -1,5 +1,5 @@
 # Alfresco Application Development Framework (ADF)
-# This build is specifically for MTA
+# This is an example with a custom home page
 
 | branch | status |
 | --- | --- |
