@@ -38,15 +38,19 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
                 { href: '/extensions/document-list/presets', icon: 'extension', title: 'Document List' }
             ]
         }, */
-        { href: '/files', icon: 'folder_open', title: 'APP_LAYOUT.CONTENT_SERVICES' },
-        { href: '/filtered-search', icon: 'rowing', title: 'APP_LAYOUT.FILTERED_SEARCH' },
-        { href: '/breadcrumb', icon: 'label', title: 'APP_LAYOUT.BREADCRUMB' },
-        { href: '/notifications', icon: 'alarm', title: 'APP_LAYOUT.NOTIFICATIONS' },
-        { href: '/card-view', icon: 'view_headline', title: 'APP_LAYOUT.CARD_VIEW' },
-        { href: '/confirm-dialog', icon: 'view_headline', title: 'APP_LAYOUT.CONFIRM-DIALOG' },
-        { href: '/header-data', icon: 'edit', title: 'APP_LAYOUT.HEADER_DATA' },
-        { href: '/node-selector', icon: 'attachment', title: 'APP_LAYOUT.NODE-SELECTOR' },
-        { href: '/sites', icon: 'format_list_bulleted', title: 'APP_LAYOUT.SITES' },
+        { href: '/files', icon: 'folder_open', title: 'APP_LAYOUT.CONTENT_SERVICES', children: [
+            {href: '/files', icon: 'folder_open', title: 'APP_LAYOUT.CONTENT_SERVICES'},
+            { href: '/filtered-search', icon: 'rowing', title: 'APP_LAYOUT.FILTERED_SEARCH' },
+            { href: '/breadcrumb', icon: 'label', title: 'APP_LAYOUT.BREADCRUMB' },
+            { href: '/notifications', icon: 'alarm', title: 'APP_LAYOUT.NOTIFICATIONS' },
+            { href: '/card-view', icon: 'view_headline', title: 'APP_LAYOUT.CARD_VIEW' },
+            { href: '/confirm-dialog', icon: 'view_headline', title: 'APP_LAYOUT.CONFIRM-DIALOG' },
+            { href: '/header-data', icon: 'edit', title: 'APP_LAYOUT.HEADER_DATA' },
+            { href: '/node-selector', icon: 'attachment', title: 'APP_LAYOUT.NODE-SELECTOR' },
+            { href: '/sites', icon: 'format_list_bulleted', title: 'APP_LAYOUT.SITES' }
+
+        ] },
+       
     { href: '/task-list', icon: 'assignment', title: 'APP_LAYOUT.TASK_LIST' },
         {
             href: '/cloud', icon: 'cloud', title: 'APP_LAYOUT.PROCESS_CLOUD', children: [
@@ -55,7 +59,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
                 { href: '/form-cloud', icon: 'poll', title: 'APP_LAYOUT.FORM' },
                 { href: '/cloud/people-group-cloud', icon: 'group', title: 'APP_LAYOUT.PEOPLE_GROUPS_CLOUD' },
                 { href: '/cloud/task-header-cloud', icon: 'cloud', title: 'APP_LAYOUT.TASK_HEADER_CLOUD.COMPONENT_NAME' },
-                { href: '/cloud/service-task-list', icon: 'cloud', title: 'APP_LAYOUT.SERVICE_TASK_LIST' }
+                { href: '/cloud/service-task-list', icon: 'cloud', title: 'APP_LAYOUT.SERVICE_TASK_LIST' },
+                { href: '/login', icon: 'vpn_key', title: 'APP_LAYOUT.LOGIN' },
+                { href: '/dl-custom-sources', icon: 'extension', title: 'APP_LAYOUT.CUSTOM_SOURCES' },
             ]
         },
         { href: '/activiti', icon: 'device_hub', title: 'APP_LAYOUT.PROCESS_SERVICES', children: [
@@ -65,29 +71,30 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
             { href: '/form-list', icon: 'library_books', title: 'APP_LAYOUT.FORM_LIST' },
             { href: '/form-loading', icon: 'cached', title: 'APP_LAYOUT.FORM_LOADING' }
         ]},
-        { href: '/login', icon: 'vpn_key', title: 'APP_LAYOUT.LOGIN' },
+        
         { href: '/trashcan', icon: 'delete', title: 'APP_LAYOUT.TRASHCAN' },
-        { href: '/dl-custom-sources', icon: 'extension', title: 'APP_LAYOUT.CUSTOM_SOURCES' },
+        
         { href: '/datatable', icon: 'view_module', title: 'APP_LAYOUT.DATATABLE', children: [
             { href: '/datatable', icon: 'view_module', title: 'APP_LAYOUT.DATATABLE' },
             { href: '/datatable-lazy', icon: 'view_module', title: 'APP_LAYOUT.DATATABLE_LAZY' },
             { href: '/datatable/dnd', icon: 'view_module', title: 'Drag and Drop' },
-            { href: '/copy-content', icon: 'view_module', title: 'Copy Content' }
+            { href: '/copy-content', icon: 'view_module', title: 'Copy Content' },
+            { href: '/rich-text-editor', icon: 'list_alt', title: 'APP_LAYOUT.RICH_TEXT_EDITOR' },
+            { href: '/template-list', icon: 'list_alt', title: 'APP_LAYOUT.TEMPLATE' },
+            { href: '/webscript', icon: 'extension', title: 'APP_LAYOUT.WEBSCRIPT' },
+            { href: '/tag', icon: 'local_offer', title: 'APP_LAYOUT.TAG' },
+            { href: '/social', icon: 'thumb_up', title: 'APP_LAYOUT.SOCIAL' },
+            { href: '/pipes', icon: 'layers', title: 'APP_LAYOUT.PIPES' },
+            { href: '/settings-layout', icon: 'settings', title: 'APP_LAYOUT.SETTINGS' },
+            { href: '/config-editor', icon: 'code', title: 'APP_LAYOUT.CONFIG-EDITOR' },
+            { href: '/extendedSearch', icon: 'search', title: 'APP_LAYOUT.SEARCH' },
+            /* cspell:disable-next-line */
+            { href: '/overlay-viewer', icon: 'pageview', title: 'APP_LAYOUT.OVERLAY_VIEWER' },
+            { href: '/treeview', icon: 'nature', title: 'APP_LAYOUT.TREE_VIEW' },
+            { href: '/expandable-list', icon: 'hot_tub', title: 'APP_LAYOUT.EXPAND_LIST' },
+            { href: '/icons', icon: 'tag_faces', title: 'APP_LAYOUT.ICONS' }
         ]},
-        { href: '/rich-text-editor', icon: 'list_alt', title: 'APP_LAYOUT.RICH_TEXT_EDITOR' },
-        { href: '/template-list', icon: 'list_alt', title: 'APP_LAYOUT.TEMPLATE' },
-        { href: '/webscript', icon: 'extension', title: 'APP_LAYOUT.WEBSCRIPT' },
-        { href: '/tag', icon: 'local_offer', title: 'APP_LAYOUT.TAG' },
-        { href: '/social', icon: 'thumb_up', title: 'APP_LAYOUT.SOCIAL' },
-        { href: '/pipes', icon: 'layers', title: 'APP_LAYOUT.PIPES' },
-        { href: '/settings-layout', icon: 'settings', title: 'APP_LAYOUT.SETTINGS' },
-        { href: '/config-editor', icon: 'code', title: 'APP_LAYOUT.CONFIG-EDITOR' },
-        { href: '/extendedSearch', icon: 'search', title: 'APP_LAYOUT.SEARCH' },
-        /* cspell:disable-next-line */
-        { href: '/overlay-viewer', icon: 'pageview', title: 'APP_LAYOUT.OVERLAY_VIEWER' },
-        { href: '/treeview', icon: 'nature', title: 'APP_LAYOUT.TREE_VIEW' },
-        { href: '/expandable-list', icon: 'hot_tub', title: 'APP_LAYOUT.EXPAND_LIST' },
-        { href: '/icons', icon: 'tag_faces', title: 'APP_LAYOUT.ICONS' },
+       
        { href: '/about', icon: 'info_outline', title: 'APP_LAYOUT.ABOUT' }
     ];
 

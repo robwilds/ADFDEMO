@@ -28,8 +28,7 @@ import { LogService } from '@alfresco/adf-core';
 export class LoginComponent {
 
     customSuccessRouteURI = '/search-filter-chips';
-    customLogoImageURL = './assets/images/MTAlogo.png';
-    //customLogoImageURL = './assets/images/mtalogo.png';
+    customLogoImageURL = './assets/images/alfresco-logo.svg';
 
     disableCsrf = false;
     showFooter = true;
@@ -42,7 +41,7 @@ export class LoginComponent {
     }
 
     onLogin() {
-        this.router.navigate(['/search-filter-chips']);
+        this.router.navigate(['/home  ccvccc']);
     }
 
     onError(err: any) {
