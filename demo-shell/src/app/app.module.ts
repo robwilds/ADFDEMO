@@ -116,6 +116,7 @@ import { setupAppNotifications } from './services/app-notifications-factory';
 import { AppNotificationsService } from './services/app-notifications.service';
 import { SearchFilterChipsComponent } from './components/search/search-filter-chips.component';
 import { UserInfoComponent } from './components/app-layout/user-info/user-info.component';
+import { DbSearchComponent } from './components/db-search/db-search.component';
 
 registerLocaleData(localeFr);
 registerLocaleData(localeDe);
@@ -209,7 +210,8 @@ registerLocaleData(localeSv);
         CustomWidgetComponent,
         ProcessCloudLayoutComponent,
         ServiceTaskListCloudDemoComponent,
-        SearchFilterChipsComponent
+        SearchFilterChipsComponent,
+        DbSearchComponent
     ],
     providers: [
         { provide: AppConfigService, useClass: DebugAppConfigService }, // not use this service in production

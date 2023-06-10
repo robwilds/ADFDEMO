@@ -56,8 +56,12 @@ import { ProcessCloudLayoutComponent } from './components/cloud/process-cloud-la
 import { ServiceTaskListCloudDemoComponent } from './components/cloud/service-task-list-cloud-demo.component';
 import { AspectListSampleComponent } from './components/aspect-list-sample/aspect-list-sample.component';
 import { SearchFilterChipsComponent } from './components/search/search-filter-chips.component';
+import { DbSearchComponent } from './components/db-search/db-search.component';
+
 
 export const appRoutes: Routes = [
+    { path: 'dbsearch', component: DbSearchComponent},
+    
     { path: 'login', loadChildren: () => import('./components/login/login.module').then(m => m.AppLoginModule) },
     { path: 'logout', component: LogoutComponent },
     {

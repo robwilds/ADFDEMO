@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-//import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { PreviewService } from '../../services/preview.service';
 import { Component,ViewChild,Input } from '@angular/core';
@@ -41,7 +40,6 @@ export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppCon
             deps: [AlfrescoApiService, AppConfigService, DiscoveryApiService]
         }
     ]
-    
 })
 
 export class HomeComponent  {
