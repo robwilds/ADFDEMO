@@ -1,0 +1,9 @@
+table {
+    width: 100%;
+  }
+  tr.blue{
+    background-color: rgb(21, 21, 118);
+  }
+  tr.grey{
+    background-color: grey;
+  }

@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -116,7 +117,7 @@ import { setupAppNotifications } from './services/app-notifications-factory';
 import { AppNotificationsService } from './services/app-notifications.service';
 import { SearchFilterChipsComponent } from './components/search/search-filter-chips.component';
 import { UserInfoComponent } from './components/app-layout/user-info/user-info.component';
-import { DbSearchComponent } from './components/db-search/db-search.component';
+import { Dbsearch2Module } from './components/dbsearch2/dbsearch2.module';
 
 registerLocaleData(localeFr);
 registerLocaleData(localeDe);
@@ -156,7 +157,8 @@ registerLocaleData(localeSv);
         ThemePickerModule,
         ChartsModule,
         AppCloudSharedModule,
-        MonacoEditorModule.forRoot()
+        MonacoEditorModule.forRoot(),
+        Dbsearch2Module
     ],
     declarations: [
         AppComponent,
@@ -211,7 +213,7 @@ registerLocaleData(localeSv);
         ProcessCloudLayoutComponent,
         ServiceTaskListCloudDemoComponent,
         SearchFilterChipsComponent,
-        DbSearchComponent
+
     ],
     providers: [
         { provide: AppConfigService, useClass: DebugAppConfigService }, // not use this service in production

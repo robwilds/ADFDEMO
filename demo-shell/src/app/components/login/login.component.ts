@@ -27,7 +27,7 @@ import { LogService } from '@alfresco/adf-core';
 })
 export class LoginComponent {
 
-    customSuccessRouteURI = '/search-filter-chips';
+    customSuccessRouteURI = '/home';
     customLogoImageURL = './assets/images/alfresco-logo.svg';
 
     disableCsrf = false;
@@ -41,7 +41,7 @@ export class LoginComponent {
     }
 
     onLogin() {
-        this.router.navigate(['/home  ccvccc']);
+        this.router.navigate(['home']);
     }
 
     onError(err: any) {

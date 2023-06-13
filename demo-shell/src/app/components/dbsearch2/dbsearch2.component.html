@@ -1,0 +1,81 @@
+
+
+<div class="box" style="background-color: aqua; max-width: 200px;" cdkDrag>
+    Drag me around
+  </div>
+
+<p></p><h3>Draggable Items</h3>
+  <div class="box" cdkDropList (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let item of items" cdkDrag>{{item}}</div>
+  </div>
+
+<p></p><h3>The new items list</h3>
+
+
+<div *ngFor="let item of items">{{item}}</div>
+
+  <p></p><h3>REST API results below</h3>
+<p></p>
+
+<button mat-fab (click)="apiClicked()">
+RUN
+  </button>
+<!--{{jsonData}}-->
+
+<!-- <table class="table table-striped">
+    <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let items of parsedJson">
+        <td>{{ items._id }}</td>
+        <td>{{ items.user }}</td>
+        <td>{{ items.text }}</td>
+      </tr>
+    </tbody>
+  </table> -->
+
+  <table mat-table [dataSource]="parsedJson" cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)" 
+  class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- ID Column -->
+    <ng-container matColumnDef="ID">
+      <th mat-header-cell *matHeaderCellDef> ID. </th>
+      <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+    </ng-container>
+  
+    <!-- User Column -->
+    <ng-container matColumnDef="user">
+      <th mat-header-cell *matHeaderCellDef> User </th>
+      <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+    </ng-container>
+  
+    <!-- Text Column -->
+    <ng-container matColumnDef="text">
+      <th mat-header-cell *matHeaderCellDef> Text </th>
+      <td mat-cell *matCellDef="let element"> {{element.text}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="blue"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "getImage(row._id)" class="grey"></tr>
+  </table>
+
+
+<!--   <adf-alfresco-viewer>
+</adf-alfresco-viewer> -->
+
+
+<p></p>
+<p></p>
+<button mat-raised-button (click)="homeButtonClicked()">
+<mat-icon>home</mat-icon>
+Home
+</button>

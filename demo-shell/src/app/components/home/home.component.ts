@@ -155,7 +155,6 @@ export class HomeComponent  {
         console.log("app id",app.id);
 
         if(app.id == null){
-
             this.router.navigate(['/task-list']);
         } else{
             this.router.navigate(['/activiti/apps', app.id,'processes']);
@@ -169,6 +168,9 @@ export class HomeComponent  {
     navigate(folderName){
         if (folderName == 'search')
         {this.router.navigateByUrl("search-filter-chips");}
+        else if (folderName = 'dbsearch')
+            {this.router.navigateByUrl("dbsearch2");
+        }
         else
         {this.router.navigateByUrl(this.prefix + this.getNodeIDByFolderName(folderName));}
     }
@@ -183,6 +185,7 @@ export class HomeComponent  {
             case 'drawings': return '9ceffb48-0cc0-4341-8720-e16d21166005/';
             case 'eq': return '0a9f912f-fba4-480d-9ee2-c4f2e894ccf8';
             case 'airbrakes': return '7d5cb795-9ba5-40cb-97f9-6e93b3e80406';
+            case 'dbsearch': return 'dbsearch2';
             default:return '295621ee-6a31-4251-86ac-fb5df2920501';
         }
     }

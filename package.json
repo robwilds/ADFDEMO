@@ -74,6 +74,7 @@
     "@editorjs/underline": "1.1.0",
     "@mat-datetimepicker/core": "^9.0.68",
     "@mat-datetimepicker/moment": "^9.0.68",
+    "@material/icon-button": "^14.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@storybook/core-server": "6.4.22",
     "angular-oauth2-oidc": "^13.0.1",
