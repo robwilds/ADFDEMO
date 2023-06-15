@@ -148,7 +148,7 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
     selectionMode = 'multiple';
 
     @Input()
-    multiselect = false;
+    multiselect = true;
 
     @Input()
     multipleFileUpload = false;

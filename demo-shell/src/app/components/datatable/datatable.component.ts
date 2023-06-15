@@ -66,9 +66,9 @@ export class DataTableComponent {
 
     @ViewChild('customColumnHeaderTemplate') customColumnHeaderTemplate;
 
-    multiselect = false;
+    multiselect = true;
     data: FilteredDataAdapter;
-    stickyHeader = false;
+    stickyHeader = true;
 
     selectionModes = [
         { value: 'none', viewValue: 'None' },
