@@ -30,7 +30,7 @@ export class Dbsearch2Component implements OnInit {
     urlFile = null;
     allowGoBack = true;
     openWith = false;
-    allowDownload = true;
+    allowDownload = false;
     allowPrint = true;
     allowRightSidebar = true;
     allowLeftSidebar = true;
